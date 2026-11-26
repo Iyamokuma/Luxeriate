@@ -1,0 +1,301 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Luxuriate design tokens
+   Warm paper and ink, with the logo's own green and gold as the brand pair.
+   forest-700 is the logo green (#014e22), honey-500 the logo gold (#cf9e29).
+   ========================================================================== */
+
+@theme {
+  --font-sans: var(--font-jakarta), var(--font-jakarta-ext), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-jakarta), var(--font-jakarta-ext), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-plex), var(--font-plex-ext), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Surfaces */
+  --color-paper: #fbf7f0;
+  /* Night — warm charcoal for dark surfaces (pairs with cream and gold) */
+  --color-night: #13110e;
+  --color-night-2: #1c1915;
+  --color-night-3: #27231d;
+  --color-cream: #fffdf9;
+  --color-sand: #f4eee4;
+  --color-line: #e9e1d5;
+  --color-line-strong: #d9cfc1;
+
+  /* Ink */
+  --color-ink-950: #15120f;
+  --color-ink-900: #1e1a16;
+  --color-ink-800: #2c2620;
+  --color-ink-700: #3d362f;
+  --color-ink-600: #554d45;
+  --color-ink-500: #6d645a;
+  --color-ink-400: #8f867b;
+  --color-ink-300: #b5ada2;
+  --color-ink-200: #d8d0c5;
+  --color-ink-100: #ece6dd;
+
+  /* Forest — primary, built around the logo green */
+  --color-forest-50: #eef6f1;
+  --color-forest-100: #d9ebe0;
+  --color-forest-200: #b2d6c0;
+  --color-forest-300: #80b998;
+  --color-forest-400: #4d986f;
+  --color-forest-500: #23784c;
+  --color-forest-600: #0d6236;
+  --color-forest-700: #014e22;
+  --color-forest-800: #013f1c;
+  --color-forest-900: #022f16;
+  --color-forest-950: #011c0d;
+
+  /* Clay — terracotta accent */
+  --color-clay-50: #fbf2ed;
+  --color-clay-100: #f7e3d8;
+  --color-clay-200: #eec4af;
+  --color-clay-300: #e29f80;
+  --color-clay-400: #d47d59;
+  --color-clay-500: #c4623c;
+  --color-clay-600: #a94e2e;
+  --color-clay-700: #8b3f26;
+  --color-clay-800: #6f3320;
+
+  /* Honey — the logo gold */
+  --color-honey-50: #fdf9ee;
+  --color-honey-100: #faf0d3;
+  --color-honey-200: #f3dea3;
+  --color-honey-300: #e9c76b;
+  --color-honey-400: #ddb343;
+  --color-honey-500: #cf9e29;
+  --color-honey-600: #b0841f;
+  --color-honey-700: #87631a;
+
+  /* Blush */
+  --color-blush-50: #fcf4f0;
+  --color-blush-100: #f8e6de;
+  --color-blush-200: #f0cdbf;
+  --color-blush-300: #e5ad98;
+
+  /* Feedback */
+  --color-danger-50: #fbefed;
+  --color-danger-100: #f6dbd7;
+  --color-danger-500: #c0443a;
+  --color-danger-600: #a5352c;
+  --color-danger-700: #862b24;
+
+  --shadow-hairline: 0 0 0 1px rgb(30 26 22 / 0.06);
+  --shadow-soft: 0 1px 2px rgb(30 26 22 / 0.04), 0 4px 16px -4px rgb(30 26 22 / 0.06);
+  --shadow-lift: 0 2px 4px rgb(30 26 22 / 0.04), 0 16px 40px -12px rgb(30 26 22 / 0.14);
+  --shadow-float: 0 4px 8px rgb(30 26 22 / 0.04), 0 30px 60px -20px rgb(30 26 22 / 0.22);
+  --shadow-inset: inset 0 1px 0 rgb(255 255 255 / 0.6);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-fade-up: fade-up 0.7s var(--ease-out-soft) both;
+  --animate-fade-in: fade-in 0.4s var(--ease-out-soft) both;
+  --animate-scale-in: scale-in 0.25s var(--ease-out-soft) both;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-soft) infinite;
+  --animate-sheet-in: sheet-in 0.35s var(--ease-out-soft) both;
+  --animate-flash: flash 2.4s var(--ease-out-soft) both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: translateY(6px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -12px, 0); }
+  }
+  @keyframes shimmer {
+    from { background-position: -400px 0; }
+    to { background-position: 400px 0; }
+  }
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgb(196 98 60 / 0.35); }
+    70% { box-shadow: 0 0 0 10px rgb(196 98 60 / 0); }
+    100% { box-shadow: 0 0 0 0 rgb(196 98 60 / 0); }
+  }
+  @keyframes sheet-in {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes flash {
+    0% { background-color: var(--color-honey-100); }
+    100% { background-color: transparent; }
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-feature-settings: "kern", "liga", "calt";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-honey-200);
+    color: var(--color-ink-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-forest-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+@utility tnum {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@utility paper-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@utility skeleton {
+  background: linear-gradient(90deg, var(--color-sand) 0px, #faf5ee 120px, var(--color-sand) 240px);
+  background-size: 800px 100%;
+  animation: var(--animate-shimmer);
+  border-radius: 0.5rem;
+}
+
+@utility leader {
+  /* dotted "menu" leaders between an item and its quantity */
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  margin: 0 0.5rem 0.3rem;
+  border-bottom: 1.5px dotted var(--color-line-strong);
+}
+
+@utility grid-lines {
+  /* the faint drafting grid behind the hero and closing card */
+  background-image:
+    linear-gradient(to right, rgb(30 26 22 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(30 26 22 / 0.05) 1px, transparent 1px);
+  background-size: 4.5rem 4.5rem;
+  background-position: -1px -1px;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility card {
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-soft);
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+/* Prose for terms & long-form content */
+.prose-lux {
+  color: var(--color-ink-700);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.prose-lux h2 {
+  color: var(--color-ink-900);
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin: 2.25rem 0 0.75rem;
+}
+.prose-lux h3 {
+  color: var(--color-ink-900);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.5rem;
+}
+.prose-lux p { margin: 0 0 1rem; }
+.prose-lux ul { margin: 0 0 1rem; padding-left: 1.25rem; list-style: disc; }
+.prose-lux li { margin: 0.35rem 0; }
+.prose-lux li::marker { color: var(--color-clay-400); }
+.prose-lux strong { color: var(--color-ink-900); font-weight: 600; }
+.prose-lux a { color: var(--color-forest-600); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Sonner toasts, on brand */
+[data-sonner-toaster] [data-sonner-toast] {
+  font-family: var(--font-sans);
+  border-radius: 14px !important;
+  border: 1px solid var(--color-line) !important;
+  background: var(--color-cream) !important;
+  color: var(--color-ink-900) !important;
+  box-shadow: var(--shadow-lift) !important;
+}
+[data-sonner-toaster] [data-sonner-toast] [data-description] {
+  color: var(--color-ink-500) !important;
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+}
