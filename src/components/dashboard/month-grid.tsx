@@ -5,7 +5,7 @@ import type { InstallmentOverview } from "@/types/db";
 
 const STATE = {
   paid: { tile: "border-forest-200/80 bg-forest-50", bar: "bg-forest-600", label: "text-forest-700", note: "text-forest-700" },
-  due: { tile: "border-honey-300 bg-honey-50 shadow-[0_0_0_3px_rgb(207_158_41/0.12)]", bar: "bg-honey-400", label: "text-honey-700", note: "text-honey-700" },
+  due: { tile: "border-tide-300 bg-tide-50 shadow-[0_0_0_3px_rgb(61_120_194/0.12)]", bar: "bg-tide-500", label: "text-tide-700", note: "text-tide-700" },
   late: { tile: "border-danger-100 bg-danger-50", bar: "bg-danger-500", label: "text-danger-700", note: "text-danger-600" },
   upcoming: { tile: "border-line bg-cream", bar: "bg-ink-100", label: "text-ink-400", note: "text-ink-400" },
   cancelled: { tile: "border-line bg-sand/50", bar: "bg-ink-100", label: "text-ink-300", note: "text-ink-300" },
@@ -45,8 +45,8 @@ export function MonthGrid({
               {i.state === "late" && <AlertTriangle className="size-3.5 text-danger-500" />}
               {i.state === "due" && (
                 <span className="relative flex size-2">
-                  <span className="absolute inset-0 animate-ping rounded-full bg-honey-400 opacity-60" />
-                  <span className="relative size-2 rounded-full bg-honey-500" />
+                  <span className="absolute inset-0 animate-ping rounded-full bg-tide-400 opacity-60" />
+                  <span className="relative size-2 rounded-full bg-tide-500" />
                 </span>
               )}
             </div>
@@ -56,7 +56,7 @@ export function MonthGrid({
               {i.state === "paid" ? formatDate(i.paid_at, "short") : i.state === "late" ? "Overdue" : formatDate(i.due_date, "short")}
             </p>
             {now && (
-              <span className="absolute -top-2 right-2 rounded-full bg-ink-950 px-1.5 py-px font-mono text-[0.5625rem] font-medium uppercase tracking-[0.12em] text-honey-200">
+              <span className="absolute -top-2 right-2 rounded-full bg-ink-950 px-1.5 py-px font-mono text-[0.5625rem] font-medium uppercase tracking-[0.12em] text-leaf-300">
                 Now
               </span>
             )}

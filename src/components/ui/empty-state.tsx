@@ -17,7 +17,7 @@ export function EmptyState({
   return (
     <div className={cn("flex flex-col items-center justify-center px-6 py-14 text-center", className)}>
       <div className="relative mb-5">
-        <ArcsMotif className="absolute left-1/2 top-1/2 h-[5.5rem] -translate-x-1/2 -translate-y-1/2 rotate-0 text-honey-300/60" />
+        <ArcsMotif className="absolute left-1/2 top-1/2 h-[5.5rem] -translate-x-1/2 -translate-y-1/2 rotate-0 text-accent-300/60" />
         <div className="relative flex size-14 items-center justify-center rounded-full bg-forest-50 text-forest-600 ring-1 ring-forest-100 [&_svg]:size-6">
           {icon}
         </div>

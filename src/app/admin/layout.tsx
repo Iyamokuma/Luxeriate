@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { redirect } from "next/navigation";
 import { MobileNav, Sidebar, type NavKey, type SidebarUser } from "@/components/admin/sidebar";
 import { AdminSignIn } from "@/components/admin/admin-sign-in";
 import { CommandSearch } from "@/components/admin/command-search";
@@ -48,9 +47,9 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
 }
 
 async function Gate({ children }: { children: React.ReactNode }) {
-  const session = await getSession();
-  if (!session) return <AdminSignIn />;
-  if (!isStaff(session.profile)) redirect("/dashboard");
+  // the team's own session: separate from any customer signed in on this browser
+  const session = await getSession("team");
+  if (!session || !isStaff(session.profile)) return <AdminSignIn />;
   return <Shell session={session}>{children}</Shell>;
 }
 
@@ -58,7 +57,7 @@ function Shell({ session, children }: { session: Session; children: React.ReactN
   const allowed = allowedFor(session.profile);
   const owner = session.profile.role === "owner";
   return (
-    <div className="min-h-dvh">
+    <div data-theme="app" className="min-h-dvh">
       <Sidebar allowed={allowed} owner={owner} user={userFor(session.profile, session.email)} />
       <div className="lg:pl-64">
         <header className="sticky top-0 z-20 border-b border-line bg-paper/85 backdrop-blur-xl">
@@ -70,7 +69,7 @@ function Shell({ session, children }: { session: Session; children: React.ReactN
             <div className="flex flex-1 justify-center lg:justify-start">
               <CommandSearch />
             </div>
-            <UserMenu name={session.profile.full_name || session.email} email={session.email} isStaff admin />
+            <UserMenu name={session.profile.full_name || session.email} email={session.email} admin />
           </div>
         </header>
         <main className="mx-auto max-w-[90rem] px-4 py-8 sm:px-6 lg:px-10 lg:py-10">{children}</main>
@@ -81,7 +80,7 @@ function Shell({ session, children }: { session: Session; children: React.ReactN
 
 function ShellFallback() {
   return (
-    <div className="min-h-dvh">
+    <div data-theme="app" className="min-h-dvh">
       <aside className="fixed inset-y-0 left-0 hidden w-64 bg-night lg:block" />
       <div className="lg:pl-64">
         <div className="h-16 border-b border-line bg-paper/85" />

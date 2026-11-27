@@ -27,7 +27,7 @@ export default function JoinPage({ params }: PageProps<"/join/[slug]">) {
 
 async function JoinContent({ params }: { params: PageProps<"/join/[slug]">["params"] }) {
   const { slug } = await params;
-  const [pkg, points, session] = await Promise.all([getPackageBySlug(slug), getCollectionPoints(), getSession()]);
+  const [pkg, points, session] = await Promise.all([getPackageBySlug(slug), getCollectionPoints(), getSession("customer")]);
   if (!pkg) notFound();
 
   if (!pkg.is_open) {

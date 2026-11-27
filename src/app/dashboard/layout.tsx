@@ -7,14 +7,14 @@ import { getSession } from "@/lib/auth";
 
 export default function DashboardLayout({ children }: LayoutProps<"/dashboard">) {
   return (
-    <div className="min-h-dvh pb-24 md:pb-0">
-      <header className="sticky top-0 z-40 bg-night/95 text-cream shadow-[0_1px_0_rgb(255_255_255/0.06)] backdrop-blur-xl">
+    <div data-theme="app" className="min-h-dvh pb-24 md:pb-0">
+      <header className="sticky top-0 z-40 border-b border-line/80 bg-cream/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
           <Link href="/dashboard" aria-label="Dashboard home">
-            <Logo light />
+            <Logo />
           </Link>
           <DashboardNav />
-          <Suspense fallback={<div className="size-9 rounded-full bg-white/10" />}>
+          <Suspense fallback={<div className="size-9 rounded-full bg-sand" />}>
             <AccountMenu />
           </Suspense>
         </div>
@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }: LayoutProps<"/dashboard">)
 }
 
 async function AccountMenu() {
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) return null;
-  return <UserMenu name={session.profile.full_name || session.email} email={session.email} isStaff={session.profile.role !== "customer"} />;
+  return <UserMenu name={session.profile.full_name || session.email} email={session.email} />;
 }

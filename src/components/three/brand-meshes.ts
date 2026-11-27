@@ -59,6 +59,18 @@ export function letterGeometries(depth = 70, bevel = 6) {
 /** Outer radius of the gold ring in master units. */
 export const RING_RADIUS = 300;
 
+/** The dashboards' stand-in for gold: a satin leaf-green metal. */
+export function leafMaterial() {
+  return new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color("#a6d645"),
+    metalness: 0.55,
+    roughness: 0.32,
+    clearcoat: 0.5,
+    clearcoatRoughness: 0.2,
+    envMapIntensity: 1.1,
+  });
+}
+
 export function goldMaterial() {
   return new THREE.MeshPhysicalMaterial({
     color: new THREE.Color("#d9a93a"),

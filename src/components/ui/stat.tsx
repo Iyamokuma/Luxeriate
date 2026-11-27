@@ -12,14 +12,15 @@ export function Stat({
   value: React.ReactNode;
   hint?: React.ReactNode;
   icon?: React.ReactNode;
-  tone?: "neutral" | "forest" | "clay" | "honey";
+  tone?: "neutral" | "forest" | "clay" | "honey" | "tide";
   className?: string;
 }) {
   const toneBg = {
     neutral: "bg-sand text-ink-600",
     forest: "bg-forest-50 text-forest-700",
     clay: "bg-clay-50 text-clay-600",
-    honey: "bg-honey-50 text-honey-600",
+    honey: "bg-accent-50 text-accent-600",
+    tide: "bg-tide-50 text-tide-600",
   }[tone];
   return (
     <div className={cn("card relative overflow-hidden p-5", className)}>

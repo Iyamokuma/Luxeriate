@@ -25,7 +25,7 @@ export function PackageBox({ filled, label, className }: { filled: number; label
       .then(() => import("@/components/three/pantry"))
       .then(({ mountPantry }) => {
         if (cancelled) return;
-        teardown = mountPantry({ host, canvas, reduce, filled, onState: () => {} });
+        teardown = mountPantry({ host, canvas, reduce, filled, fresh: true, onState: () => {} });
       })
       .catch(() => {});
     return () => {

@@ -8,11 +8,13 @@ import type { PaymentOverview } from "@/types/db";
 
 export async function GET(request: Request, ctx: RouteContext<"/api/receipts/[id]">) {
   const { id } = await ctx.params;
-  const session = await getSession();
+  // back-office links add ?team=1 and use the team session; everyone else the customer session
+  const team = new URL(request.url).searchParams.get("team") === "1";
+  const session = await getSession(team ? "team" : "customer");
   if (!session) {
     // Links in emails: sign in first, then come straight back to the receipt
-    const login = new URL("/login", request.url);
-    login.searchParams.set("next", `/api/receipts/${id}`);
+    const login = new URL(team ? "/admin" : "/login", request.url);
+    login.searchParams.set("next", `/api/receipts/${id}${team ? "?team=1" : ""}`);
     return Response.redirect(login, 303);
   }
   const db = session.supabase;

@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 const tones = {
   forest: "bg-gradient-to-r from-forest-500 to-forest-700",
   clay: "bg-gradient-to-r from-clay-400 to-clay-600",
-  honey: "bg-gradient-to-r from-honey-300 to-honey-500",
-  light: "bg-gradient-to-r from-honey-200 to-honey-400",
+  honey: "bg-gradient-to-r from-accent-300 to-accent-500",
+  light: "bg-gradient-to-r from-accent-200 to-accent-400",
 };
 
 export function Progress({

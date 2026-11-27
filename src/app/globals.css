@@ -68,6 +68,50 @@
   --color-honey-600: #b0841f;
   --color-honey-700: #87631a;
 
+  /* Accent — what shared components highlight with: the logo gold on the
+     website, the leaf accent in the dashboards (see data-theme="app" below) */
+  --color-accent-50: var(--color-honey-50);
+  --color-accent-100: var(--color-honey-100);
+  --color-accent-200: var(--color-honey-200);
+  --color-accent-300: var(--color-honey-300);
+  --color-accent-400: var(--color-honey-400);
+  --color-accent-500: var(--color-honey-500);
+  --color-accent-600: var(--color-honey-600);
+  --color-accent-700: var(--color-honey-700);
+
+  /* Leaf — the dashboards' accent: a fresh lime that sits with the brand green */
+  --color-leaf-50: #f5fce6;
+  --color-leaf-100: #e9f8c8;
+  --color-leaf-200: #d6f19b;
+  --color-leaf-300: #c2e86c;
+  --color-leaf-400: #a6d645;
+  --color-leaf-500: #88bb2b;
+  --color-leaf-600: #6a9520;
+  --color-leaf-700: #51721c;
+  --color-leaf-800: #3f5819;
+  --color-leaf-900: #33471a;
+
+  /* Tide — calm blue for what's coming up: due soon, pending, in progress */
+  --color-tide-50: #eef5fc;
+  --color-tide-100: #dbe9f8;
+  --color-tide-200: #b8d3f0;
+  --color-tide-300: #8db7e5;
+  --color-tide-400: #5f96d6;
+  --color-tide-500: #3d78c2;
+  --color-tide-600: #2d60a3;
+  --color-tide-700: #264e84;
+  --color-tide-800: #22426b;
+
+  /* Ember — warnings that need a person */
+  --color-ember-50: #fdf3ec;
+  --color-ember-100: #fbe3d2;
+  --color-ember-200: #f6c5a2;
+  --color-ember-300: #efa06b;
+  --color-ember-400: #e77f3e;
+  --color-ember-500: #d9661f;
+  --color-ember-600: #b65116;
+  --color-ember-700: #8f4015;
+
   /* Blush */
   --color-blush-50: #fcf4f0;
   --color-blush-100: #f8e6de;
@@ -129,9 +173,62 @@
     to { transform: translateX(0); }
   }
   @keyframes flash {
-    0% { background-color: var(--color-honey-100); }
+    0% { background-color: var(--flash-color, var(--color-honey-100)); }
     100% { background-color: transparent; }
   }
+}
+
+/* ==========================================================================
+   The dashboards' look
+   The customer dashboard, the back office and their two sign-in doors use
+   crisp cool neutrals, the brand green and the leaf accent instead of the
+   website's warm paper and gold. Layouts opt in with data-theme="app"; it
+   applies to the whole document while one is on screen, so menus, dialogs
+   and toasts (which render at the end of <body>) match.
+   ========================================================================== */
+
+:root:has([data-theme="app"]) {
+  --color-paper: #f3f5f2;
+  --color-night: #0c1a14;
+  --color-night-2: #12241b;
+  --color-night-3: #1a3125;
+  --color-cream: #ffffff;
+  --color-sand: #ebefea;
+  --color-line: #e1e6df;
+  --color-line-strong: #ccd3c9;
+
+  --color-ink-950: #0b120e;
+  --color-ink-900: #121a15;
+  --color-ink-800: #1f2923;
+  --color-ink-700: #313c35;
+  --color-ink-600: #48544c;
+  --color-ink-500: #5f6c64;
+  --color-ink-400: #85918a;
+  --color-ink-300: #adb7b0;
+  --color-ink-200: #d2d9d3;
+  --color-ink-100: #e7ece7;
+
+  --shadow-hairline: 0 0 0 1px rgb(12 26 20 / 0.06);
+  --shadow-soft: 0 1px 2px rgb(12 26 20 / 0.04), 0 4px 16px -4px rgb(12 26 20 / 0.06);
+  --shadow-lift: 0 2px 4px rgb(12 26 20 / 0.04), 0 16px 40px -12px rgb(12 26 20 / 0.14);
+  --shadow-float: 0 4px 8px rgb(12 26 20 / 0.04), 0 30px 60px -20px rgb(12 26 20 / 0.22);
+
+  --color-accent-50: var(--color-leaf-50);
+  --color-accent-100: var(--color-leaf-100);
+  --color-accent-200: var(--color-leaf-200);
+  --color-accent-300: var(--color-leaf-300);
+  --color-accent-400: var(--color-leaf-400);
+  --color-accent-500: var(--color-leaf-500);
+  --color-accent-600: var(--color-leaf-600);
+  --color-accent-700: var(--color-leaf-700);
+
+  /* the logo's arcs turn leaf; the website keeps them gold */
+  --logo-arcs: #88bb2b;
+  --logo-arcs-light: #c2e86c;
+  --flash-color: var(--color-leaf-100);
+}
+:root:has([data-theme="app"]) ::selection {
+  background: var(--color-leaf-200);
 }
 
 /* ==========================================================================

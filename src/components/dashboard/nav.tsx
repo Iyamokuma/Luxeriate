@@ -19,14 +19,14 @@ function isActive(pathname: string, href: string) {
 export function DashboardNav() {
   const pathname = usePathname();
   return (
-    <nav className="hidden items-center gap-1 rounded-full bg-white/[0.06] p-1 ring-1 ring-inset ring-white/10 md:flex" aria-label="Account">
+    <nav className="hidden items-center gap-1 rounded-full bg-sand p-1 ring-1 ring-inset ring-line md:flex" aria-label="Account">
       {ITEMS.map((i) => (
         <Link
           key={i.href}
           href={i.href}
           className={cn(
             "rounded-full px-4 py-1.5 text-sm font-semibold transition",
-            isActive(pathname, i.href) ? "bg-cream text-ink-950 shadow-soft" : "text-ink-300 hover:text-cream",
+            isActive(pathname, i.href) ? "bg-cream text-ink-950 shadow-soft ring-1 ring-line" : "text-ink-500 hover:text-ink-900",
           )}
         >
           {i.label}
@@ -40,7 +40,7 @@ export function MobileTabBar() {
   const pathname = usePathname();
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-night/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-cream/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden"
       aria-label="Account"
     >
       <div className="mx-auto grid max-w-md grid-cols-4">
@@ -51,12 +51,12 @@ export function MobileTabBar() {
               <span
                 className={cn(
                   "flex h-7 w-12 items-center justify-center rounded-full transition",
-                  active ? "bg-white/10 text-honey-300" : "text-ink-400",
+                  active ? "bg-leaf-200 text-forest-900" : "text-ink-400",
                 )}
               >
                 <Icon className="size-[1.15rem]" />
               </span>
-              <span className={cn("text-[0.6875rem] font-semibold", active ? "text-cream" : "text-ink-400")}>{label}</span>
+              <span className={cn("text-[0.6875rem] font-semibold", active ? "text-ink-950" : "text-ink-400")}>{label}</span>
             </Link>
           );
         })}

@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  * 3D LM monogram. Shows the flat logo until Three.js has loaded and rendered,
  * then cross-fades to the sculpture.
  */
-export function Monogram3D({ tone = "brand", className }: { tone?: "brand" | "light"; className?: string }) {
+export function Monogram3D({ tone = "brand", fresh, className }: { tone?: "brand" | "light"; fresh?: boolean; className?: string }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -26,7 +26,7 @@ export function Monogram3D({ tone = "brand", className }: { tone?: "brand" | "li
         io.disconnect();
         import("./monogram")
           .then(({ mountMonogram }) => {
-            if (!cancelled) teardown = mountMonogram({ host, canvas, tone, reduce });
+            if (!cancelled) teardown = mountMonogram({ host, canvas, tone, reduce, fresh });
           })
           .catch(() => {});
       },
@@ -38,7 +38,7 @@ export function Monogram3D({ tone = "brand", className }: { tone?: "brand" | "li
       io.disconnect();
       teardown?.();
     };
-  }, [tone]);
+  }, [tone, fresh]);
 
   return (
     <div ref={hostRef} className={cn("group/mono relative", className)}>

@@ -5,11 +5,12 @@ import { BarChart3, Table2 } from "lucide-react";
 import { monthName, naira, nairaShort, number } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { MonthlyCollection } from "@/types/db";
+import { C } from "./monitor/colors";
 
-// Validated with the dataviz palette checker against the cream surface (#fffdf9)
+// The dashboards' chart colours (validated on the white card surface)
 export const SERIES = {
-  contributions: "#1d7a52",
-  fees: "#bd7a1f",
+  contributions: C.contributions,
+  fees: C.fees,
 };
 
 /** A clean axis step (1, 2 or 5 × a power of ten) giving about four gridlines. */
@@ -95,7 +96,7 @@ export function CollectionsChart({ data }: { data: MonthlyCollection[] }) {
           <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="img" aria-label={`Monthly collections, ${naira(total)} in total`} onMouseLeave={() => setHover(null)}>
             {ticks.map((t) => (
               <g key={t}>
-                <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} stroke="#ece6dd" strokeWidth={1} />
+                <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} stroke="#e7ece7" strokeWidth={1} />
                 <text x={pad.l - 10} y={y(t)} dy="0.32em" textAnchor="end" className="tnum fill-ink-400 text-[11px]">
                   {nairaShort(t)}
                 </text>

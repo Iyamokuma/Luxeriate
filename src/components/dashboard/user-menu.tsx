@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, LogOut, ShieldCheck, ShoppingBasket, UserRound } from "lucide-react";
+import { LayoutDashboard, LogOut, ShoppingBasket, UserRound } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Dropdown, DropdownContent, DropdownItem, DropdownSeparator, DropdownTrigger } from "@/components/ui/dropdown";
 
-export function UserMenu({ name, email, isStaff, admin }: { name: string; email: string; isStaff?: boolean; admin?: boolean }) {
+/** `admin` is the back-office menu; signing out there ends only the team session. */
+export function UserMenu({ name, email, admin }: { name: string; email: string; admin?: boolean }) {
   return (
     <Dropdown>
       <DropdownTrigger className="flex items-center gap-2 rounded-full p-0.5 outline-none ring-forest-500/20 transition hover:ring-4 focus-visible:ring-4">
@@ -42,15 +43,8 @@ export function UserMenu({ name, email, isStaff, admin }: { name: string; email:
             </DropdownItem>
           </>
         )}
-        {isStaff && !admin && (
-          <DropdownItem asChild>
-            <Link href="/admin">
-              <ShieldCheck /> Back office
-            </Link>
-          </DropdownItem>
-        )}
         <DropdownSeparator />
-        <form action="/auth/signout" method="post">
+        <form action={admin ? "/auth/signout?door=team" : "/auth/signout"} method="post">
           <DropdownItem asChild>
             <button type="submit" className="w-full text-danger-600 [&_svg]:!text-danger-500">
               <LogOut /> Sign out

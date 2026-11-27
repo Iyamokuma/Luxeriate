@@ -6,28 +6,35 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendAccountLink } from "@/lib/email/notify";
 import { env } from "@/lib/env";
-import { homeFor } from "@/lib/auth";
+import { doorOf } from "@/lib/auth";
+import type { Door } from "@/lib/supabase/doors";
 
 export type FormState = { error?: string; ok?: boolean; message?: string } | undefined;
 
 const safeNext = (n: unknown) => (typeof n === "string" && n.startsWith("/") && !n.startsWith("//") ? n : null);
 
+/** The customer login at /login: customer accounts only, kept in the customer session. */
 export async function signIn(_: FormState, formData: FormData): Promise<FormState> {
   const parsed = z
     .object({ email: z.email(), password: z.string().min(1) })
     .safeParse({ email: String(formData.get("email") ?? "").trim().toLowerCase(), password: formData.get("password") });
   if (!parsed.success) return { error: "Enter your email and password." };
 
-  const supabase = await createClient();
+  const supabase = await createClient("customer");
   const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error || !data.user) return { error: "That email and password don't match our records." };
 
   const { data: profile } = await supabase.from("profiles").select("role, is_active").eq("id", data.user.id).single();
+  if (doorOf(profile) === "team") {
+    await supabase.auth.signOut({ scope: "local" });
+    return { error: "This is the customer login. Team members sign in at /admin." };
+  }
   if (profile && !profile.is_active) {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: "local" });
     return { error: "This account has been deactivated. Please contact the owner." };
   }
-  redirect(safeNext(formData.get("next")) ?? homeFor(profile));
+  const next = safeNext(formData.get("next"));
+  redirect(next && !next.startsWith("/admin") && !next.startsWith("/api/admin") ? next : "/dashboard");
 }
 
 /** The back-office sign-in at /admin: team accounts only. */
@@ -37,21 +44,21 @@ export async function staffSignIn(_: FormState, formData: FormData): Promise<For
     .safeParse({ email: String(formData.get("email") ?? "").trim().toLowerCase(), password: formData.get("password") });
   if (!parsed.success) return { error: "Enter your email and password." };
 
-  const supabase = await createClient();
+  const supabase = await createClient("team");
   const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error || !data.user) return { error: "That email and password don't match our records." };
 
   const { data: profile } = await supabase.from("profiles").select("role, is_active").eq("id", data.user.id).single();
-  if (!profile || profile.role === "customer") {
-    await supabase.auth.signOut();
+  if (doorOf(profile) !== "team") {
+    await supabase.auth.signOut({ scope: "local" });
     return { error: "This sign-in is for the Luxuriate team. Customers log in at /login." };
   }
-  if (!profile.is_active) {
-    await supabase.auth.signOut();
+  if (!profile!.is_active) {
+    await supabase.auth.signOut({ scope: "local" });
     return { error: "This account has been deactivated. Please contact the owner." };
   }
   const next = safeNext(formData.get("next"));
-  redirect(next?.startsWith("/admin") ? next : "/admin");
+  redirect(next && (next.startsWith("/admin") || next.startsWith("/api/admin") || next.startsWith("/api/receipts/")) ? next : "/admin");
 }
 
 export async function requestPasswordReset(_: FormState, formData: FormData): Promise<FormState> {
@@ -79,13 +86,14 @@ export async function updatePassword(_: FormState, formData: FormData): Promise<
   if (password.length < 8) return { error: "Use at least 8 characters." };
   if (password !== confirm) return { error: "The two passwords don't match." };
 
-  const supabase = await createClient();
+  // the reset link signed them in at their own door (see /auth/confirm)
+  const door: Door = formData.get("door") === "team" ? "team" : "customer";
+  const supabase = await createClient(door);
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { error: "Your reset link has expired. Please request a new one." };
   const { error } = await supabase.auth.updateUser({ password });
   if (error) return { error: error.message.includes("different") ? "Choose a password you haven't used before." : "We couldn't update your password. Please try again." };
-  const { data: profile } = await supabase.from("profiles").select("role, is_active").eq("id", user.id).single();
-  redirect(`${homeFor(profile)}?password=updated`);
+  redirect(door === "team" ? "/admin?password=updated" : "/dashboard?password=updated");
 }

@@ -29,7 +29,7 @@ export default function CustomersPage(props: PageProps<"/admin/customers">) {
   );
 }
 
-const statusTone = { active: "forest", pending_payment: "honey", completed: "ink", cancelled: "neutral" } as const;
+const statusTone = { active: "forest", pending_payment: "tide", completed: "ink", cancelled: "neutral" } as const;
 
 async function CustomersContent({ searchParams }: { searchParams: PageProps<"/admin/customers">["searchParams"] }) {
   const sp = await searchParams;

@@ -165,7 +165,7 @@ export function PackageEditor({ pkg, year, customers }: { pkg?: PackageWithItems
       </div>
 
       {pkg && customers > 0 && (
-        <div className="flex items-start gap-3 rounded-2xl border border-honey-200 bg-honey-50 px-5 py-4 text-sm text-honey-700">
+        <div className="flex items-start gap-3 rounded-2xl border border-ember-200 bg-ember-50 px-5 py-4 text-sm text-ember-700">
           <Info className="mt-0.5 size-4 shrink-0" />
           <p>
             <span className="font-semibold">{customers} customer{customers === 1 ? " is" : "s are"} on this package.</span> Price, fee and savings changes

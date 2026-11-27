@@ -22,7 +22,7 @@ function useSignedIn() {
   const [signedIn, setSignedIn] = useState(false);
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return;
-    const supabase = createClient();
+    const supabase = createClient("customer");
     supabase.auth.getSession().then(({ data }) => setSignedIn(Boolean(data.session)));
     const { data } = supabase.auth.onAuthStateChange((_e, session) => setSignedIn(Boolean(session)));
     return () => data.subscription.unsubscribe();

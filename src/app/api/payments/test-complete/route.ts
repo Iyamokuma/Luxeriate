@@ -5,7 +5,7 @@ import { confirmPayment } from "@/lib/payments";
 /** Simulated checkout for local development (PAYSTACK_TEST_MODE=true, never in production). */
 export async function POST(request: Request) {
   if (!env.paystackTestMode) return new Response("Not found", { status: 404 });
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) return Response.json({ ok: false, error: "Please sign in again." }, { status: 401 });
   const { reference } = (await request.json().catch(() => ({}))) as { reference?: string };
   if (!reference) return Response.json({ ok: false, error: "Missing reference." }, { status: 400 });

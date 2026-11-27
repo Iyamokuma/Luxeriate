@@ -186,12 +186,13 @@ function makePainter(font: string, textures: THREE.Texture[]) {
       }
     });
 
-  const pool = () =>
+  const pool = (fresh = false) =>
     tex(512, 512, (c, w, h) => {
       const g = c.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
-      g.addColorStop(0, "rgba(255,236,196,0.55)");
-      g.addColorStop(0.45, "rgba(232,190,110,0.18)");
-      g.addColorStop(1, "rgba(232,190,110,0)");
+      // warm lamplight on the website; a cool, leafy wash in the dashboards
+      g.addColorStop(0, fresh ? "rgba(226,246,214,0.42)" : "rgba(255,236,196,0.55)");
+      g.addColorStop(0.45, fresh ? "rgba(160,214,120,0.14)" : "rgba(232,190,110,0.18)");
+      g.addColorStop(1, fresh ? "rgba(160,214,120,0)" : "rgba(232,190,110,0)");
       c.fillStyle = g;
       c.fillRect(0, 0, w, h);
     });
@@ -240,6 +241,7 @@ export function mountPantry({
   reduce,
   onState,
   filled,
+  fresh = false,
 }: {
   host: HTMLElement;
   canvas: HTMLCanvasElement;
@@ -250,6 +252,8 @@ export function mountPantry({
    * instead of looping the whole year.
    */
   filled?: number;
+  /** The dashboards' look: cool daylight, a leafy rim and a green emblem instead of gold. */
+  fresh?: boolean;
 }) {
   const hold = filled === undefined ? null : Math.max(0, Math.min(12, Math.round(filled)));
   let renderer: InstanceType<typeof THREE.WebGLRenderer>;
@@ -280,7 +284,7 @@ export function mountPantry({
 
   /* lights */
   // high and slightly in front, so shadows stay tucked under the box
-  const key = new THREE.DirectionalLight(0xffe7c2, 2.7);
+  const key = new THREE.DirectionalLight(fresh ? 0xf4f8f2 : 0xffe7c2, 2.7);
   key.position.set(-2.2, 8, 3.2);
   key.castShadow = true;
   key.shadow.mapSize.set(1024, 1024);
@@ -292,16 +296,16 @@ export function mountPantry({
   key.shadow.camera.far = 20;
   key.shadow.bias = -0.0006;
   key.shadow.normalBias = 0.02;
-  const rim = new THREE.DirectionalLight(0xf3c45a, 1.9);
+  const rim = new THREE.DirectionalLight(fresh ? 0xb9e57a : 0xf3c45a, fresh ? 1.6 : 1.9);
   rim.position.set(3.5, 2.6, -4.5);
   const fill = new THREE.DirectionalLight(0xdfe4ea, 0.4);
   fill.position.set(4.5, 1.5, 3);
-  scene.add(key, rim, fill, new THREE.HemisphereLight(0xfff4e2, 0x1e170e, 0.55));
+  scene.add(key, rim, fill, fresh ? new THREE.HemisphereLight(0xf2f7f0, 0x0c1a14, 0.6) : new THREE.HemisphereLight(0xfff4e2, 0x1e170e, 0.55));
 
   /* stage floor: a warm pool of light and the contact shadows */
   const poolMesh = new THREE.Mesh(
     new THREE.PlaneGeometry(5.6, 5.6),
-    new THREE.MeshBasicMaterial({ map: paint.pool(), transparent: true, depthWrite: false }),
+    new THREE.MeshBasicMaterial({ map: paint.pool(fresh), transparent: true, depthWrite: false }),
   );
   poolMesh.rotation.x = -Math.PI / 2;
   poolMesh.position.y = -0.002;
@@ -317,7 +321,8 @@ export function mountPantry({
   const ivory = new THREE.MeshStandardMaterial({ color: IVORY, roughness: 0.62 });
   const inside = new THREE.MeshStandardMaterial({ color: "#d9cdb4", roughness: 0.8 });
   const green = new THREE.MeshStandardMaterial({ color: BRAND_GREEN, roughness: 0.5 });
-  const gold = goldMaterial();
+  // the emblem: brand gold on the website, brand green in the dashboards
+  const gold = fresh ? new THREE.MeshStandardMaterial({ color: BRAND_GREEN, metalness: 0.35, roughness: 0.38 }) : goldMaterial();
   const parts: [THREE.BufferGeometry, THREE.Material, [number, number, number]][] = [
     [rounded(W, T, D, 0.03), inside, [0, T / 2, 0]],
     [rounded(W, H, T, 0.03), ivory, [0, H / 2, D / 2 - T / 2]],
@@ -337,7 +342,7 @@ export function mountPantry({
     mesh.receiveShadow = true;
     box.add(mesh);
   }
-  // gold LM emblem on the front
+  // LM emblem on the front
   const emblem = new THREE.Group();
   for (const g of letterGeometries(16, 3)) emblem.add(new THREE.Mesh(g, gold));
   for (const g of crescentGeometries(10, 2.5)) emblem.add(new THREE.Mesh(g, gold));

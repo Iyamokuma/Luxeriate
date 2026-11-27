@@ -3,7 +3,7 @@ import { confirmPayment } from "@/lib/payments";
 
 /** Called by the browser after the Paystack popup reports success. */
 export async function POST(request: Request) {
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) return Response.json({ ok: false, error: "Please sign in again." }, { status: 401 });
   const { reference } = (await request.json().catch(() => ({}))) as { reference?: string };
   if (!reference) return Response.json({ ok: false, error: "Missing reference." }, { status: 400 });

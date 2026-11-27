@@ -32,7 +32,7 @@ export default function ReferralsPage() {
 }
 
 async function ReferralsContent() {
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) redirect("/login?next=/dashboard/referrals");
   const [enrollments, { data }] = await Promise.all([getMyEnrollments(session), session.supabase.rpc("my_referrals")]);
   const codes = enrollments.filter((e) => e.referral_code);
@@ -56,7 +56,7 @@ async function ReferralsContent() {
           { icon: BadgeCheck, title: "It counts once they pay", body: "Luxuriate rewards its top referrers each cycle." },
         ].map(({ icon: Icon, title, body }, i) => (
           <li key={title} className="card flex items-start gap-3.5 p-4 sm:p-5">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-honey-50 text-honey-700 ring-1 ring-inset ring-honey-200">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-leaf-100 text-forest-800 ring-1 ring-inset ring-leaf-200">
               <Icon className="size-4" />
             </span>
             <div className="min-w-0">
@@ -71,8 +71,8 @@ async function ReferralsContent() {
         <div className="space-y-5">
           {codes.map((e) => (
             <div key={e.id} className="relative overflow-hidden rounded-[1.5rem] bg-forest-800 p-7 text-cream shadow-float">
-              <ArcsMotif className="absolute -right-8 -top-10 h-52 text-honey-300/30" />
-              <p className="eyebrow relative text-honey-300">{e.package_name}</p>
+              <ArcsMotif className="absolute -right-8 -top-10 h-52 text-leaf-300/25" />
+              <p className="eyebrow relative text-leaf-300">{e.package_name}</p>
               <p className="relative mt-3 font-mono text-4xl font-semibold tracking-wider">{e.referral_code}</p>
               <p className="relative mt-2 text-sm text-forest-100/80">Friends enter this code on the registration form.</p>
               <div className="relative mt-6 [&_a]:border-white/20 [&_a]:bg-white/10 [&_a]:text-cream [&_button]:border-white/20 [&_button]:bg-white/10 [&_button]:text-cream">

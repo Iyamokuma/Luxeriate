@@ -33,7 +33,7 @@ export async function registerAndPay(input: {
   acceptTerms: boolean;
   months: number;
 }): Promise<RegisterResult> {
-  const session = await getSession();
+  const session = await getSession("customer");
 
   const details = detailsSchema.safeParse(
     session ? { ...input.details, email: session.email } : input.details,
@@ -129,7 +129,7 @@ export async function registerAndPay(input: {
   }
 
   if (createdNow) {
-    const supabase = await createClient();
+    const supabase = await createClient("customer");
     await supabase.auth.signInWithPassword({ email: d.email, password: input.account!.password });
   }
 

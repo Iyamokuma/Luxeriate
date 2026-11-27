@@ -43,13 +43,13 @@ export function PlanHero({
   const lastMonth = installments[installments.length - 1]?.period_month ?? e.package_start_month;
 
   return (
-    <section className="relative overflow-hidden rounded-[2rem] bg-night text-cream shadow-[0_40px_80px_-40px_rgb(10_8_5/0.65)]">
+    <section className="relative overflow-hidden rounded-[2rem] bg-night text-cream shadow-[0_40px_80px_-40px_rgb(6_20_14/0.6)]">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_100%_0%,rgb(207_158_41/0.18),transparent_60%),radial-gradient(50%_70%_at_0%_100%,rgb(1_78_34/0.45),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_75%_at_100%_0%,rgb(194_232_108/0.13),transparent_60%),radial-gradient(55%_75%_at_0%_100%,rgb(35_120_76/0.42),transparent_70%)]"
       />
       <div aria-hidden className="grid-lines pointer-events-none absolute inset-0 opacity-40 invert [mask-image:linear-gradient(to_bottom,black,transparent_75%)]" />
-      <ArcsMotif className="pointer-events-none absolute -left-24 -top-40 h-[26rem] w-auto text-honey-300/[0.05]" />
+      <ArcsMotif className="pointer-events-none absolute -left-24 -top-40 h-[26rem] w-auto text-white/[0.035]" />
 
       <div className="relative grid lg:grid-cols-[minmax(0,1.12fr)_minmax(0,1fr)]">
         {/* ── what's happening ─────────────────────────────────────── */}
@@ -60,7 +60,7 @@ export function PlanHero({
           </div>
 
           <h1 className="mt-6 text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:text-[2.6rem]">
-            {greeting()}, <span className="text-honey-300">{name}</span>
+            {greeting()}, <span className="text-leaf-300">{name}</span>
           </h1>
           <StatusLine e={e} s={s} dueKobo={dueKobo} />
 
@@ -69,11 +69,11 @@ export function PlanHero({
               {e.status === "pending_payment" ? "To activate" : "Saved"} · {e.package_name} · {e.cycle_year}
             </p>
             {e.status === "pending_payment" ? (
-              <p className="tnum mt-2.5 bg-gradient-to-b from-honey-100 via-honey-300 to-honey-500 bg-clip-text text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-transparent sm:text-[3.5rem]">
+              <p className="tnum mt-2.5 text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-cream sm:text-[3.5rem]">
                 {naira(e.registration_fee_kobo + e.monthly_amount_kobo - e.credit_kobo)}
               </p>
             ) : (
-              <p className="tnum mt-2.5 bg-gradient-to-b from-honey-100 via-honey-300 to-honey-500 bg-clip-text text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-transparent sm:text-[3.75rem]">
+              <p className="tnum mt-2.5 text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-cream sm:text-[3.75rem]">
                 {naira(e.paid_kobo)}
               </p>
             )}
@@ -106,7 +106,7 @@ export function PlanHero({
                 registrationKobo={e.registration_fee_kobo}
                 creditKobo={e.credit_kobo}
                 nextMonths={nextMonths}
-                variant="gold"
+                variant="leaf"
                 label={`Pay ${naira(e.registration_fee_kobo + e.monthly_amount_kobo - e.credit_kobo)} to activate`}
                 autoOpen={payParam}
               />
@@ -118,7 +118,7 @@ export function PlanHero({
                 creditKobo={e.credit_kobo}
                 defaultMonths={Math.max(1, s.dueNow.length)}
                 nextMonths={nextMonths}
-                variant="gold"
+                variant="leaf"
                 label={`Pay ${naira(Math.max(100, dueKobo - e.credit_kobo))} now`}
                 autoOpen={payParam}
               />
@@ -129,12 +129,12 @@ export function PlanHero({
                 remainingMonths={unpaid.length}
                 creditKobo={e.credit_kobo}
                 nextMonths={nextMonths}
-                variant="gold"
+                variant="leaf"
                 label="Pay ahead"
                 autoOpen={payParam}
               />
             ) : (
-              <Button asChild variant="gold" size="lg">
+              <Button asChild variant="leaf" size="lg">
                 <a href="#package">
                   Track your package <ArrowDownRight />
                 </a>
@@ -155,7 +155,7 @@ export function PlanHero({
 
         {/* ── the box ──────────────────────────────────────────────── */}
         <div className="relative min-h-[19rem] border-t border-white/[0.06] sm:min-h-[22rem] lg:border-l lg:border-t-0">
-          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(55%_50%_at_50%_58%,rgb(233_199_107/0.16),transparent_70%)]" />
+          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(55%_50%_at_50%_58%,rgb(194_232_108/0.12),transparent_70%)]" />
           <PackageBox
             filled={items}
             label={`Your ${e.package_name} box with ${items} of 12 items in it, one for each month paid. Drag to turn it.`}
@@ -163,7 +163,7 @@ export function PlanHero({
           />
           <div className="pointer-events-none absolute inset-x-5 bottom-5 flex items-end justify-between gap-3 sm:inset-x-7 sm:bottom-7">
             <div className="rounded-2xl bg-night-2/75 px-4 py-3 ring-1 ring-inset ring-white/10 backdrop-blur-md">
-              <p className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-honey-300">Your box</p>
+              <p className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-leaf-300">Your box</p>
               <p className="mt-1 text-sm text-ink-200">
                 <span className="tnum font-semibold text-cream">{items}</span> of 12 items in
               </p>
@@ -231,7 +231,7 @@ function nextSub(e: EnrollmentOverview, next?: InstallmentOverview) {
 }
 
 function StatusLine({ e, s, dueKobo }: { e: EnrollmentOverview; s: Standing; dueKobo: number }) {
-  let tone: "danger" | "honey" | "good" | "gold" | "muted" = "muted";
+  let tone: "danger" | "due" | "good" | "done" | "muted" = "muted";
   let chip = "";
   let text: React.ReactNode = "";
   if (s.kind === "pending") {
@@ -246,7 +246,7 @@ function StatusLine({ e, s, dueKobo }: { e: EnrollmentOverview; s: Standing; due
       </>
     );
   } else if (s.kind === "due") {
-    tone = "honey";
+    tone = "due";
     chip = s.daysLeft <= 0 ? "Due today" : s.daysLeft === 1 ? "Due tomorrow" : `Due in ${s.daysLeft} days`;
     text = (
       <>
@@ -263,7 +263,7 @@ function StatusLine({ e, s, dueKobo }: { e: EnrollmentOverview; s: Standing; due
         : `Your first month is due ${formatDate(s.next.due_date, "long")}.`
       : "Every month is paid.";
   } else {
-    tone = "gold";
+    tone = "done";
     chip = FULFILMENT_LABEL[e.fulfilment_status] === "Not started" ? "Completed" : FULFILMENT_LABEL[e.fulfilment_status];
     text =
       e.fulfilment_status === "collected"
@@ -278,20 +278,20 @@ function StatusLine({ e, s, dueKobo }: { e: EnrollmentOverview; s: Standing; due
   }
   const chipCls = {
     danger: "bg-danger-500/15 text-[#f3a59c] ring-danger-500/30",
-    honey: "bg-honey-400/12 text-honey-200 ring-honey-400/30",
+    due: "bg-tide-400/15 text-tide-200 ring-tide-300/35",
     good: "bg-forest-400/15 text-forest-200 ring-forest-400/30",
-    gold: "bg-honey-400/12 text-honey-200 ring-honey-400/30",
+    done: "bg-leaf-300/12 text-leaf-200 ring-leaf-300/30",
     muted: "bg-white/[0.06] text-ink-200 ring-white/15",
   }[tone];
-  const dot = { danger: "bg-[#f07a6d]", honey: "bg-honey-300", good: "bg-forest-300", gold: "bg-honey-300", muted: "bg-ink-300" }[tone];
+  const dot = { danger: "bg-[#f07a6d]", due: "bg-tide-300", good: "bg-forest-300", done: "bg-leaf-300", muted: "bg-ink-300" }[tone];
   return (
     <div className="mt-3 flex max-w-xl flex-wrap items-center gap-x-3 gap-y-2">
       <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset", chipCls)}>
-        {tone === "gold" ? (
+        {tone === "done" ? (
           <Check className="size-3" strokeWidth={3} />
         ) : (
           <span className="relative flex size-1.5">
-            {(tone === "danger" || tone === "honey") && <span className={cn("absolute inset-0 animate-ping rounded-full opacity-70", dot)} />}
+            {(tone === "danger" || tone === "due") && <span className={cn("absolute inset-0 animate-ping rounded-full opacity-70", dot)} />}
             <span className={cn("relative size-1.5 rounded-full", dot)} />
           </span>
         )}
@@ -302,7 +302,7 @@ function StatusLine({ e, s, dueKobo }: { e: EnrollmentOverview; s: Standing; due
   );
 }
 
-/** One slice per month: gold when paid, red when late, outlined when due. */
+/** One slice per month: leaf when paid, red when late, outlined in blue when due. */
 function MonthMeter({ installments }: { installments: InstallmentOverview[] }) {
   const paid = installments.filter((i) => i.paid_at).length;
   return (
@@ -318,9 +318,9 @@ function MonthMeter({ installments }: { installments: InstallmentOverview[] }) {
           title={`${formatMonth(i.period_month)}: ${i.state}`}
           className={cn(
             "h-2 rounded-full",
-            i.state === "paid" && "bg-gradient-to-r from-honey-200 to-honey-400",
+            i.state === "paid" && "bg-leaf-300",
             i.state === "late" && "bg-[#e0645a]",
-            i.state === "due" && "bg-honey-300/15 ring-1 ring-inset ring-honey-300/70",
+            i.state === "due" && "bg-tide-300/15 ring-1 ring-inset ring-tide-300/80",
             (i.state === "upcoming" || i.state === "cancelled") && "bg-white/10",
           )}
         />
@@ -338,7 +338,7 @@ function PlanSwitcher({ enrollments, current }: { enrollments: EnrollmentOvervie
           x.status === "pending_payment"
             ? "bg-ink-400"
             : x.status === "completed"
-              ? "bg-honey-300"
+              ? "bg-leaf-300"
               : x.late_count > 0
                 ? "bg-[#f07a6d]"
                 : "bg-forest-300";

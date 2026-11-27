@@ -127,7 +127,7 @@ export function DashboardOverview({
           </div>
           <div className="flex flex-wrap gap-3 text-xs text-ink-500">
             <Key className="bg-forest-600" label="Paid" />
-            <Key className="bg-honey-400" label="Due" />
+            <Key className="bg-tide-500" label="Due" />
             <Key className="bg-danger-500" label="Late" />
             <Key className="bg-ink-200" label="Upcoming" />
           </div>
@@ -146,9 +146,9 @@ export function DashboardOverview({
         <div className="min-w-0 space-y-5">
           {e.referral_code && (
             <div className="relative overflow-hidden rounded-[1.25rem] bg-forest-800 p-6 text-cream shadow-float">
-              <ArcsMotif className="absolute -right-10 -top-12 h-44 text-honey-300/25" />
+              <ArcsMotif className="absolute -right-10 -top-12 h-44 text-leaf-300/20" />
               <div className="relative">
-                <p className="flex items-center gap-2 font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-honey-300">
+                <p className="flex items-center gap-2 font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-leaf-300">
                   <Sparkles className="size-3.5" /> Your referral code
                 </p>
                 <p className="mt-3 font-mono text-[1.75rem] font-semibold tracking-[0.08em]">{e.referral_code}</p>
@@ -156,7 +156,7 @@ export function DashboardOverview({
                 <div className="mt-5 [&_a]:border-white/20 [&_a]:bg-white/10 [&_a]:text-cream [&_a:hover]:bg-white/15 [&_button]:border-white/20 [&_button]:bg-white/10 [&_button]:text-cream [&_button:hover]:bg-white/15">
                   <ReferralShare code={e.referral_code} siteUrl={env.siteUrl} compact />
                 </div>
-                <Link href="/dashboard/referrals" className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-honey-200 hover:text-honey-100">
+                <Link href="/dashboard/referrals" className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-leaf-200 hover:text-leaf-100">
                   See who joined with your code <ArrowUpRight className="size-3.5" />
                 </Link>
               </div>
@@ -211,7 +211,7 @@ function RecordCard({ record, e }: { record: PaymentRecord; e: EnrollmentOvervie
       </CardHeader>
       <CardContent className="flex flex-1 flex-col pt-5">
         <div className="flex items-center gap-5">
-          <ProgressRing value={record.counted ? pct : 0} size={104} stroke={9} barClassName={cn(pct >= 90 ? "stroke-forest-600" : pct >= 60 ? "stroke-honey-500" : "stroke-danger-500")}>
+          <ProgressRing value={record.counted ? pct : 0} size={104} stroke={9} barClassName={cn(pct >= 90 ? "stroke-forest-600" : pct >= 60 ? "stroke-tide-500" : "stroke-danger-500")}>
             <span className="tnum text-[1.375rem] font-semibold leading-none tracking-[-0.02em] text-ink-900">{record.counted ? `${pct}%` : "—"}</span>
             <span className="mt-1 text-[0.625rem] font-medium uppercase tracking-[0.12em] text-ink-400">on time</span>
           </ProgressRing>

@@ -59,13 +59,13 @@ async function ReferralsContent({ searchParams }: { searchParams: PageProps<"/ad
   const referred = (recent ?? []) as EnrollmentOverview[];
   const totalReferred = board.reduce((s, l) => s + Number(l.referred_count), 0);
   const converted = board.reduce((s, l) => s + Number(l.active_count) + Number(l.completed_count), 0);
-  const medal = ["bg-honey-300 text-ink-900", "bg-ink-200 text-ink-800", "bg-clay-200 text-clay-800"];
+  const medal = ["bg-leaf-300 text-forest-950", "bg-ink-200 text-ink-800", "bg-clay-200 text-clay-800"];
 
   return (
     <div className="space-y-6">
       <PageHeader title="Referrals" description="Who is bringing in new customers. Reward them however you choose." actions={<YearSwitcher years={years} year={year} />} />
       <div className="grid gap-4 sm:grid-cols-3">
-        <Stat label="People referred" value={number(totalReferred)} icon={<Gift />} tone="honey" />
+        <Stat label="People referred" value={number(totalReferred)} icon={<Gift />} tone="forest" />
         <Stat label="Now paying" value={number(converted)} hint="Active or completed" tone="forest" />
         <Stat label="Customers who referred" value={number(board.length)} />
       </div>
@@ -73,7 +73,7 @@ async function ReferralsContent({ searchParams }: { searchParams: PageProps<"/ad
         <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Trophy className="size-4 text-honey-600" /> Top referrers
+              <Trophy className="size-4 text-leaf-600" /> Top referrers
             </CardTitle>
           </CardHeader>
           <CardContent className="px-0 pb-0 sm:px-0">
@@ -136,7 +136,7 @@ async function ReferralsContent({ searchParams }: { searchParams: PageProps<"/ad
                         via <span className="font-mono">{e.referred_by_code}</span> · {formatDate(e.created_at)}
                       </p>
                     </div>
-                    <Badge tone={e.status === "active" ? "forest" : e.status === "completed" ? "ink" : "honey"} size="sm">
+                    <Badge tone={e.status === "active" ? "forest" : e.status === "completed" ? "ink" : "tide"} size="sm">
                       {ENROLLMENT_LABEL[e.status]}
                     </Badge>
                   </li>

@@ -91,7 +91,9 @@ Copy `.env.example` to `.env.local` and fill it in. On Vercel, add the same vari
 pnpm create-owner owner@example.com "Owner Name" "a-strong-password"
 ```
 
-**Two front doors.** The team signs in at **`/admin`**: signed out, it shows the back-office sign-in (customer accounts are turned away there); signed in, the owner sees the executive brief and staff see the command centre. Customers sign in at **`/login`** (a team member who uses it is sent on to `/admin`). Signing out returns each to their own door.
+**Two front doors, two sessions.** The team signs in at **`/admin`**: signed out, it shows the back-office sign-in (customer accounts are turned away there); signed in, the owner sees the executive brief and staff see the command centre. Customers sign in at **`/login`** (team accounts are turned away there). Each door keeps its own session cookie (`lux-team-auth` for `/admin` and `/api/admin`, `lux-customer-auth` for everything else; see `src/lib/supabase/doors.ts`), so a team member and a customer can be signed in on the same browser at once. Signing out of one door leaves the other signed in. Reset and invite links sign the account in at its own door.
+
+**Look.** The dashboards and both sign-in pages use their own theme (`data-theme="app"` in `globals.css`): cool neutrals, the brand green and a leaf accent, with blue for what's due and orange for warnings. The public website keeps its warm paper and gold.
 
 Invite staff from **Admin → Staff**; they get an email to set their password, then sign in at `/admin`.
 

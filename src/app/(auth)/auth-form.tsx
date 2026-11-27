@@ -128,9 +128,12 @@ export function ForgotForm() {
 }
 
 export function ResetForm() {
+  const params = useSearchParams();
   const [state, action, pending] = useActionState<FormState, FormData>(updatePassword, undefined);
   return (
     <form action={action} className="space-y-5">
+      {/* the reset link signed the account in at its own door: team or customer */}
+      <input type="hidden" name="door" value={params.get("door") === "team" ? "team" : "customer"} />
       {state?.error && <Alert>{state.error}</Alert>}
       <Field label="New password" htmlFor="password" hint="At least 8 characters.">
         <PasswordInput id="password" name="password" autoComplete="new-password" required minLength={8} />

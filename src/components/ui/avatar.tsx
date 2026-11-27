@@ -3,7 +3,7 @@ import { initials } from "@/lib/format";
 
 const palettes = [
   "bg-forest-100 text-forest-800",
-  "bg-honey-100 text-honey-700",
+  "bg-accent-100 text-accent-700",
   "bg-blush-100 text-clay-700",
   "bg-sand text-ink-700",
   "bg-clay-100 text-clay-800",

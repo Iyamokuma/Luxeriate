@@ -5,6 +5,7 @@ import {
   disposeScene,
   enamelMaterial,
   goldMaterial,
+  leafMaterial,
   letterGeometries,
   loopWhileVisible,
   studioEnvironment,
@@ -24,11 +25,14 @@ export function mountMonogram({
   canvas,
   tone,
   reduce,
+  fresh = false,
 }: {
   host: HTMLElement;
   canvas: HTMLCanvasElement;
   tone: keyof typeof LETTER_COLOR;
   reduce: boolean;
+  /** The dashboards' look: leaf arcs and cool light instead of gold and lamplight. */
+  fresh?: boolean;
 }) {
   let renderer: InstanceType<typeof THREE.WebGLRenderer>;
   try {
@@ -49,18 +53,18 @@ export function mountMonogram({
 
   const enamel = enamelMaterial(LETTER_COLOR[tone]);
   for (const g of letterGeometries(78, 7)) sculpture.add(new THREE.Mesh(g, enamel));
-  const gold = goldMaterial();
+  const gold = fresh ? leafMaterial() : goldMaterial();
   crescentGeometries(30, 6).forEach((g, i) => {
     const mesh = new THREE.Mesh(g, gold);
     mesh.position.z = i === 0 ? -14 : 14;
     sculpture.add(mesh);
   });
 
-  const key = new THREE.DirectionalLight(0xfff3e2, 2.1);
+  const key = new THREE.DirectionalLight(fresh ? 0xf4f8f2 : 0xfff3e2, 2.1);
   key.position.set(-500, 700, 900);
-  const rim = new THREE.DirectionalLight(tone === "light" ? 0xd8f0e0 : 0xffe2b0, 1.4);
+  const rim = new THREE.DirectionalLight(fresh ? 0xc8ecd4 : tone === "light" ? 0xd8f0e0 : 0xffe2b0, 1.4);
   rim.position.set(700, 200, -600);
-  scene.add(key, rim, new THREE.HemisphereLight(0xfffaf0, 0xb59c74, 0.5));
+  scene.add(key, rim, fresh ? new THREE.HemisphereLight(0xf2f7f0, 0x4f6b5a, 0.5) : new THREE.HemisphereLight(0xfffaf0, 0xb59c74, 0.5));
 
   const layout = () => {
     const w = host.clientWidth;

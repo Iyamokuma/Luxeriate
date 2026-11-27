@@ -21,7 +21,7 @@ export function LiveRefresh({
 
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return;
-    const supabase = createClient();
+    const supabase = createClient("team");
     const channel = supabase.channel("admin-live");
     for (const table of tables) {
       channel.on("postgres_changes", { event: "*", schema: "public", table }, () => {

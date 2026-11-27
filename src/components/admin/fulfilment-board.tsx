@@ -16,7 +16,7 @@ import { formatDate, formatDateTime } from "@/lib/format";
 import { setFulfilment } from "@/app/admin/actions/operations";
 import type { EnrollmentOverview } from "@/types/db";
 
-const tone = { not_started: "neutral", preparing: "honey", ready: "forest", collection_scheduled: "clay", collected: "ink" } as const;
+const tone = { not_started: "neutral", preparing: "tide", ready: "forest", collection_scheduled: "clay", collected: "ink" } as const;
 type Step = (typeof FULFILMENT_STEPS)[number]["key"];
 
 export function FulfilmentBoard({ rows }: { rows: EnrollmentOverview[] }) {

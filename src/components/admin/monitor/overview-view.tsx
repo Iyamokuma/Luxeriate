@@ -112,18 +112,18 @@ export function OverviewView({ name, owner, years, year, monitor, monitorError, 
   return (
     <div className="space-y-10">
       {/* ── Command band ──────────────────────────────────────────────── */}
-      <section id="pulse" className="relative scroll-mt-40 overflow-hidden rounded-[1.75rem] bg-night text-cream shadow-[0_40px_80px_-40px_rgb(10_8_5/0.6)]">
+      <section id="pulse" className="relative scroll-mt-40 overflow-hidden rounded-[1.75rem] bg-night text-cream shadow-[0_40px_80px_-40px_rgb(6_20_14/0.6)]">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_75%_at_100%_0%,rgb(207_158_41/0.16),transparent_62%),radial-gradient(45%_60%_at_0%_100%,rgb(1_78_34/0.38),transparent_70%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_75%_at_100%_0%,rgb(194_232_108/0.12),transparent_62%),radial-gradient(45%_60%_at_0%_100%,rgb(35_120_76/0.36),transparent_70%)]"
         />
         <div aria-hidden className="grid-lines pointer-events-none absolute inset-0 opacity-50 [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
-        <ArcsMotif className="pointer-events-none absolute -right-40 -top-52 h-[30rem] w-auto text-honey-300/[0.045]" />
+        <ArcsMotif className="pointer-events-none absolute -right-40 -top-52 h-[30rem] w-auto text-white/[0.035]" />
 
         <div className="relative p-5 sm:p-8 xl:p-10">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-honey-400/10 px-2.5 py-1 font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-honey-300 ring-1 ring-inset ring-honey-400/20">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-leaf-300/10 px-2.5 py-1 font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-leaf-300 ring-1 ring-inset ring-leaf-300/20">
                 <ShieldCheck className="size-3" />
                 {owner ? "Super admin" : "Back office"}
               </span>
@@ -135,7 +135,7 @@ export function OverviewView({ name, owner, years, year, monitor, monitorError, 
                   href={`/admin?year=${year}`}
                   className="group hidden items-center gap-1.5 rounded-full bg-white/[0.05] px-3 py-1.5 text-xs font-semibold text-ink-200 ring-1 ring-inset ring-white/10 transition hover:bg-white/10 hover:text-cream sm:inline-flex"
                 >
-                  <Crown className="size-3.5 text-honey-300" /> Executive brief
+                  <Crown className="size-3.5 text-leaf-300" /> Executive brief
                   <ArrowUpRight className="size-3 text-ink-400 transition group-hover:text-cream" />
                 </Link>
               )}
@@ -147,7 +147,7 @@ export function OverviewView({ name, owner, years, year, monitor, monitorError, 
           <div className="mt-8 grid gap-10 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] xl:gap-12">
             <div className="flex min-w-0 flex-col">
               <h1 className="text-[2rem] font-bold leading-[1.08] tracking-[-0.035em] text-cream sm:text-[2.5rem]">
-                {greeting()}, <span className="text-honey-300">{firstName(name)}</span>
+                {greeting()}, <span className="text-leaf-300">{firstName(name)}</span>
               </h1>
               <p className="mt-2.5 max-w-xl text-[0.9375rem] leading-relaxed text-ink-300">
                 {owner
@@ -160,7 +160,7 @@ export function OverviewView({ name, owner, years, year, monitor, monitorError, 
                   <div className="mt-9">
                     <p className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-ink-400">Received · all time</p>
                     <p
-                      className="tnum mt-2.5 bg-gradient-to-b from-honey-100 via-honey-300 to-honey-500 bg-clip-text text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-transparent sm:text-[3.75rem]"
+                      className="tnum mt-2.5 text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-cream sm:text-[3.75rem]"
                       title={`${number(money.payments_count)} payments`}
                     >
                       {naira(money.all_time_kobo)}
@@ -403,8 +403,8 @@ export function OverviewView({ name, owner, years, year, monitor, monitorError, 
             <Panel>
               <PanelHead title="Savings returns" hint="Money owed back to finishers" href={`/admin/savings?year=${year}`} linkLabel="Savings" />
               <div className="space-y-4">
-                <div className="rounded-2xl bg-honey-50/80 p-4 ring-1 ring-inset ring-honey-200/70">
-                  <p className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.14em] text-honey-700">To pay out</p>
+                <div className="rounded-2xl bg-tide-50/80 p-4 ring-1 ring-inset ring-tide-200/70">
+                  <p className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.14em] text-tide-700">To pay out</p>
                   <p className="tnum mt-1.5 font-mono text-[1.625rem] font-medium leading-none tracking-[-0.03em] text-ink-950">{naira(ops.savings.pending_kobo)}</p>
                   <p className="mt-1.5 text-xs text-ink-500">{plural(Number(ops.savings.pending), "customer")} waiting</p>
                 </div>

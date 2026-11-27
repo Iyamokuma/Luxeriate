@@ -275,7 +275,7 @@ function TermsForm({ initial }: { initial: string }) {
 function Row({ ok, title, children }: { ok: boolean; title: string; children: React.ReactNode }) {
   return (
     <li className="flex items-start gap-3 px-5 py-4 sm:px-6">
-      {ok ? <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-forest-600" /> : <CircleAlert className="mt-0.5 size-5 shrink-0 text-honey-600" />}
+      {ok ? <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-forest-600" /> : <CircleAlert className="mt-0.5 size-5 shrink-0 text-ember-600" />}
       <div className="min-w-0 flex-1">
         <p className="font-semibold text-ink-900">{title}</p>
         <div className="mt-0.5 text-sm text-ink-500">{children}</div>

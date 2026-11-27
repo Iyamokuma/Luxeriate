@@ -84,7 +84,7 @@ async function ReportsContent({ searchParams }: { searchParams: PageProps<"/admi
 
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
         <Stat label={`Contributions received in ${calYear}`} value={nairaShort(yearContrib)} tone="forest" />
-        <Stat label={`Registration fees in ${calYear}`} value={nairaShort(yearFees)} tone="honey" />
+        <Stat label={`Registration fees in ${calYear}`} value={nairaShort(yearFees)} tone="tide" />
         <Stat label={`Outstanding, ${year} cycle`} value={nairaShort(sum("outstanding_kobo"))} hint={`of ${nairaShort(sum("expected_kobo"))} expected`} />
         <Stat label={`Completed, ${year} cycle`} value={number(sum("completed"))} hint={`of ${number(sum("customers"))} customers`} tone="forest" />
       </div>

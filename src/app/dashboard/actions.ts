@@ -6,7 +6,7 @@ import { startPayment, type StartPaymentResult } from "@/lib/payments";
 import { fieldErrors, normalisePhone, profileUpdateSchema } from "@/lib/validation";
 
 export async function startPaymentAction(enrollmentId: string, months: number): Promise<StartPaymentResult> {
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) return { ok: false, error: "Please sign in again." };
   return startPayment({ enrollmentId, userId: session.userId, months });
 }
@@ -14,7 +14,7 @@ export async function startPaymentAction(enrollmentId: string, months: number): 
 export type ProfileState = { ok?: boolean; error?: string; fieldErrors?: Record<string, string> } | undefined;
 
 export async function updateProfile(_: ProfileState, formData: FormData): Promise<ProfileState> {
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) return { error: "Please sign in again." };
   const parsed = profileUpdateSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: "Please check the highlighted fields.", fieldErrors: fieldErrors(parsed.error) };
@@ -38,7 +38,7 @@ export async function updateProfile(_: ProfileState, formData: FormData): Promis
 }
 
 export async function changePassword(_: ProfileState, formData: FormData): Promise<ProfileState> {
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) return { error: "Please sign in again." };
   const current = String(formData.get("current") ?? "");
   const password = String(formData.get("password") ?? "");

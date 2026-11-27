@@ -1,9 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { cookieNameFor, doorFor } from "@/lib/supabase/doors";
 
 /**
- * Refreshes the Supabase session cookie on every navigation and sends
- * signed-out visitors away from private areas. This is only an optimistic
+ * Refreshes the session cookie of the door this path belongs to (team for
+ * /admin, customer for everything else) and sends signed-out visitors to that
+ * door's sign-in. The two doors keep separate cookies, so a team member and a
+ * customer can be signed in on the same browser. This is only an optimistic
  * check; every private page and action verifies the user again on the server.
  */
 export async function proxy(request: NextRequest) {
@@ -11,9 +14,12 @@ export async function proxy(request: NextRequest) {
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return NextResponse.next({ request });
 
+  const { pathname, search } = request.nextUrl;
+  const door = doorFor(pathname);
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(url, key, {
+    cookieOptions: { name: cookieNameFor(door) },
     cookies: {
       getAll() {
         return request.cookies.getAll();
@@ -28,15 +34,12 @@ export async function proxy(request: NextRequest) {
 
   const { data } = await supabase.auth.getClaims();
   const signedIn = Boolean(data?.claims?.sub);
-  const { pathname, search } = request.nextUrl;
 
-  const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
-  const isPrivate = pathname.startsWith("/dashboard") || isAdmin;
   // /admin itself is the team's sign-in page when signed out
-  if (!signedIn && isPrivate && pathname !== "/admin") {
+  const gated = door === "team" ? pathname.startsWith("/admin/") : pathname === "/dashboard" || pathname.startsWith("/dashboard/");
+  if (!signedIn && gated) {
     const login = request.nextUrl.clone();
-    // the team signs in at /admin, customers at /login
-    login.pathname = isAdmin ? "/admin" : "/login";
+    login.pathname = door === "team" ? "/admin" : "/login";
     login.search = `?next=${encodeURIComponent(pathname + search)}`;
     const redirect = NextResponse.redirect(login);
     response.cookies.getAll().forEach((c) => redirect.cookies.set(c));

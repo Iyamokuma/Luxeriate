@@ -55,8 +55,8 @@ export function PaymentFeedback({ customerCode, referralCode, packageName }: { c
     <Dialog open={open} onOpenChange={(o) => !o && close()}>
       <DialogContent size="sm" className="overflow-hidden">
         <div className="relative bg-forest-800 px-6 pb-10 pt-12 text-center text-cream">
-          <ArcsMotif className="absolute left-1/2 top-1/2 h-64 -translate-x-1/2 -translate-y-1/2 text-honey-300/25" />
-          <span className="relative mx-auto flex size-16 animate-scale-in items-center justify-center rounded-full bg-honey-300 text-forest-900 shadow-lift">
+          <ArcsMotif className="absolute left-1/2 top-1/2 h-64 -translate-x-1/2 -translate-y-1/2 text-leaf-300/25" />
+          <span className="relative mx-auto flex size-16 animate-scale-in items-center justify-center rounded-full bg-leaf-300 text-forest-900 shadow-lift">
             <Check className="size-8" strokeWidth={3} />
           </span>
           <DialogTitle className="relative mt-6 text-3xl text-cream">{completed ? "Every month is paid!" : "Welcome to Luxuriate"}</DialogTitle>

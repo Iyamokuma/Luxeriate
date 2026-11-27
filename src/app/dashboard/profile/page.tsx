@@ -22,7 +22,7 @@ export default function ProfilePage() {
 }
 
 async function ProfileContent() {
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) redirect("/login?next=/dashboard/profile");
   const p = session.profile;
   return (

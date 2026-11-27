@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { getSession, homeFor } from "@/lib/auth";
+import { doorOf, getSession } from "@/lib/auth";
 import { LoginForm } from "../auth-form";
 
 export const metadata: Metadata = { title: "Log in" };
@@ -29,7 +29,8 @@ export default function LoginPage() {
 }
 
 async function RedirectIfSignedIn() {
-  const session = await getSession();
-  if (session) redirect(homeFor(session.profile));
+  const session = await getSession("customer");
+  // only the customer session counts here; a team session at /admin is separate
+  if (session && doorOf(session.profile) === "customer") redirect("/dashboard");
   return null;
 }

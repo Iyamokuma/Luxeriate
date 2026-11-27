@@ -9,7 +9,9 @@ const badgeVariants = cva(
         neutral: "bg-sand text-ink-600",
         forest: "bg-forest-100 text-forest-800",
         clay: "bg-clay-100 text-clay-700",
-        honey: "bg-honey-100 text-honey-700",
+        honey: "bg-accent-100 text-accent-700",
+        tide: "bg-tide-100 text-tide-700",
+        ember: "bg-ember-100 text-ember-700",
         danger: "bg-danger-100 text-danger-700",
         ink: "bg-ink-900 text-cream",
         outline: "border border-line-strong bg-cream text-ink-600",
@@ -29,11 +31,13 @@ const dotColor: Record<string, string> = {
   neutral: "bg-ink-400",
   forest: "bg-forest-500",
   clay: "bg-clay-500",
-  honey: "bg-honey-500",
+  honey: "bg-accent-500",
+  tide: "bg-tide-500",
+  ember: "bg-ember-500",
   danger: "bg-danger-500",
-  ink: "bg-honey-300",
+  ink: "bg-accent-300",
   outline: "bg-ink-400",
-  light: "bg-honey-300",
+  light: "bg-accent-300",
 };
 
 export function Badge({

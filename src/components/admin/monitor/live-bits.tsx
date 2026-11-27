@@ -103,7 +103,7 @@ export function SectionNav({ sections }: { sections: { id: string; label: string
               className={cn(
                 "relative flex h-12 items-center whitespace-nowrap px-3 text-sm font-medium transition",
                 active === s.id
-                  ? "text-ink-900 after:absolute after:inset-x-3 after:bottom-0 after:h-[2px] after:rounded-full after:bg-honey-500"
+                  ? "text-ink-900 after:absolute after:inset-x-3 after:bottom-0 after:h-[2px] after:rounded-full after:bg-leaf-400"
                   : "text-ink-400 hover:text-ink-700",
               )}
             >

@@ -150,17 +150,17 @@ export function PulseChart({ data, height = 120 }: { data: { d: string; c: numbe
         <svg width={w} height={height} role="img" aria-label={`Money received over the last ${rows.length} days: ${naira(total)}`} className="block overflow-visible">
           <defs>
             <linearGradient id="pulse-fill" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={C.gold} stopOpacity={0.32} />
-              <stop offset="100%" stopColor={C.gold} stopOpacity={0} />
+              <stop offset="0%" stopColor={C.spark} stopOpacity={0.32} />
+              <stop offset="100%" stopColor={C.spark} stopOpacity={0} />
             </linearGradient>
           </defs>
           <line x1={0} x2={w} y1={base} y2={base} stroke="rgb(255 255 255 / 0.1)" />
           {total > 0 && <path d={area} fill="url(#pulse-fill)" />}
-          <path d={line} fill="none" stroke={C.gold} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" opacity={total > 0 ? 1 : 0.35} />
+          <path d={line} fill="none" stroke={C.spark} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" opacity={total > 0 ? 1 : 0.35} />
           {hover !== null && (
             <g>
               <line x1={pts[hover][0]} x2={pts[hover][0]} y1={pad.t - 4} y2={base} stroke="rgb(255 255 255 / 0.28)" strokeDasharray="2 3" />
-              <circle cx={pts[hover][0]} cy={pts[hover][1]} r={4.5} fill={C.gold} stroke="#13110e" strokeWidth={2} />
+              <circle cx={pts[hover][0]} cy={pts[hover][1]} r={4.5} fill={C.spark} stroke={C.night} strokeWidth={2} />
             </g>
           )}
           {rows.length > 0 && (
@@ -331,7 +331,7 @@ export function FlowChart({ data }: { data: { d: string; c: number; f: number; n
                     </g>
                   );
                 })}
-                <line x1={pad.l} x2={w - pad.r} y1={base} y2={base} stroke="#d9cfc1" />
+                <line x1={pad.l} x2={w - pad.r} y1={base} y2={base} stroke={C.axis} />
               </svg>
             )}
             {hover !== null && rows[hover] && (
@@ -405,7 +405,7 @@ export function Sparkline({
           </defs>
           {!empty && <path d={`${line}L${x(values.length - 1)},${height}L${x(0)},${height}Z`} fill={`url(#${id})`} />}
           <path d={line} fill="none" stroke={empty ? C.neutral : color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={empty ? "3 4" : undefined} />
-          {hover !== null && <circle cx={pts[hover][0]} cy={pts[hover][1]} r={3.5} fill={color} stroke="#fffdf9" strokeWidth={2} />}
+          {hover !== null && <circle cx={pts[hover][0]} cy={pts[hover][1]} r={3.5} fill={color} stroke={C.surface} strokeWidth={2} />}
           <rect
             x={0}
             y={0}
@@ -457,7 +457,7 @@ export function ForecastChart({ data, today }: { data: { m: string; due_kobo: nu
       <div ref={ref} className="relative" style={{ height: H }}>
         {w > 0 && (
           <svg width={w} height={H} role="img" aria-label="Money due per month and how much has been received" className="block" onPointerLeave={() => setHover(null)}>
-            <line x1={0} x2={w} y1={base} y2={base} stroke="#d9cfc1" />
+            <line x1={0} x2={w} y1={base} y2={base} stroke={C.axis} />
             {rows.map((r, i) => {
               const cx = slot * i + slot / 2;
               const bx = cx - barW / 2;
@@ -583,7 +583,7 @@ export function SignupChart({ data }: { data: { d: string; joined: number; activ
               );
             })}
             <path d={monotonePath(linePts)} fill="none" stroke={C.fees} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
-            {hover !== null && linePts[hover] && <circle cx={linePts[hover][0]} cy={linePts[hover][1]} r={4} fill={C.fees} stroke="#fffdf9" strokeWidth={2} />}
+            {hover !== null && linePts[hover] && <circle cx={linePts[hover][0]} cy={linePts[hover][1]} r={4} fill={C.fees} stroke={C.surface} strokeWidth={2} />}
             {rows.map((r, i) => (
               <rect key={r.d} x={pad.l + slot * i} y={pad.t} width={slot} height={plotH} fill="transparent" onPointerEnter={() => setHover(i)} />
             ))}

@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
   const type = sp.get("type") ?? "";
   const format = sp.get("format") === "pdf" ? "pdf" : "xlsx";
-  const session = await getSession();
+  const session = await getSession("team");
   if (!session || !isStaff(session.profile)) return new Response("Please sign in.", { status: 401 });
   const need = NEED[type];
   if (!need) return new Response("Unknown export.", { status: 400 });

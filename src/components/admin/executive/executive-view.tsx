@@ -50,18 +50,18 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
   return (
     <div className="space-y-10">
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden rounded-[1.75rem] bg-night text-cream shadow-[0_40px_80px_-40px_rgb(10_8_5/0.6)]">
+      <section className="relative overflow-hidden rounded-[1.75rem] bg-night text-cream shadow-[0_40px_80px_-40px_rgb(6_20_14/0.6)]">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_70%_at_0%_0%,rgb(207_158_41/0.17),transparent_62%),radial-gradient(55%_75%_at_100%_100%,rgb(1_78_34/0.42),transparent_70%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_70%_at_0%_0%,rgb(194_232_108/0.12),transparent_62%),radial-gradient(55%_75%_at_100%_100%,rgb(35_120_76/0.4),transparent_70%)]"
         />
         <div aria-hidden className="grid-lines pointer-events-none absolute inset-0 opacity-40 invert [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
-        <ArcsMotif className="pointer-events-none absolute -right-36 -top-48 h-[30rem] w-auto text-honey-300/[0.05]" />
+        <ArcsMotif className="pointer-events-none absolute -right-36 -top-48 h-[30rem] w-auto text-white/[0.035]" />
 
         <div className="relative p-5 sm:p-8 xl:p-10">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-honey-200 to-honey-400 px-2.5 py-1 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-ink-950 shadow-[0_6px_18px_-8px_rgb(207_158_41/0.9)]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-leaf-300 px-2.5 py-1 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-forest-950 shadow-[0_6px_18px_-8px_rgb(166_214_69/0.8)]">
                 <Crown className="size-3" />
                 Super admin
               </span>
@@ -77,7 +77,7 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
           <div className="mt-8 grid gap-10 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] xl:gap-12">
             <div className="flex min-w-0 flex-col">
               <h1 className="text-[2rem] font-bold leading-[1.08] tracking-[-0.035em] sm:text-[2.5rem]">
-                {greeting()}, <span className="text-honey-300">{firstName(name)}</span>
+                {greeting()}, <span className="text-leaf-300">{firstName(name)}</span>
               </h1>
               <p className="mt-2.5 max-w-xl text-[0.9375rem] leading-relaxed text-ink-300">
                 The {year} cycle at a glance: what customers have committed to, what&apos;s in the bank, what&apos;s promised back, and who needs a call.
@@ -86,7 +86,7 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
               <div className="mt-9">
                 <p className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-ink-400">Booked · {year} cycle</p>
                 <p
-                  className="tnum mt-2.5 bg-gradient-to-b from-honey-100 via-honey-300 to-honey-500 bg-clip-text text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-transparent sm:text-[3.75rem]"
+                  className="tnum mt-2.5 text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-cream sm:text-[3.75rem]"
                   title="The full value of every paying customer's plan"
                 >
                   {naira(now.booked)}
@@ -98,7 +98,7 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
 
               <div className="mt-7 max-w-xl">
                 <div className="flex h-2.5 gap-[2px] overflow-hidden rounded-full bg-white/10" role="img" aria-label={`${collectedPct}% of the booked value is collected`}>
-                  {now.collected > 0 && <span className="h-full rounded-l-full bg-gradient-to-r from-honey-200 to-honey-400" style={{ width: `${collectedPct}%` }} />}
+                  {now.collected > 0 && <span className="h-full rounded-l-full bg-leaf-300" style={{ width: `${collectedPct}%` }} />}
                   {now.overdue > 0 && <span className="h-full bg-[#e0645a]" style={{ width: `${Math.max(0.8, (now.overdue / (now.booked || 1)) * 100)}%` }} />}
                 </div>
                 <div className="mt-2.5 flex flex-wrap justify-between gap-2 text-xs">
@@ -139,7 +139,7 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
                 href={href}
                 className="group inline-flex items-center gap-2 rounded-full bg-white/[0.05] px-3.5 py-2 text-sm font-semibold text-ink-200 ring-1 ring-inset ring-white/10 transition hover:bg-white/10 hover:text-cream"
               >
-                <Icon className="size-4 text-honey-300" />
+                <Icon className="size-4 text-leaf-300" />
                 {label}
                 <ArrowUpRight className="size-3.5 text-ink-400 transition group-hover:-translate-y-px group-hover:translate-x-px group-hover:text-cream" />
               </Link>
@@ -311,7 +311,7 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
                           {r.referral_code} · {r.package_name}
                         </p>
                       </div>
-                      <span className="tnum rounded-full bg-honey-50 px-2 py-0.5 text-xs font-semibold text-honey-700 ring-1 ring-inset ring-honey-200">
+                      <span className="tnum rounded-full bg-leaf-100 px-2 py-0.5 text-xs font-semibold text-leaf-800 ring-1 ring-inset ring-leaf-200">
                         {Number(r.active_count) + Number(r.completed_count)} paying
                       </span>
                     </li>
@@ -572,7 +572,7 @@ function Ledger({
                   {r.note && <span className="ml-1.5 text-xs text-ink-400">· {r.note}</span>}
                 </span>
                 <span className="leader" aria-hidden />
-                <span className={cn("tnum whitespace-nowrap font-mono text-[0.875rem] font-medium", r.danger ? "text-danger-600" : r.warn ? "text-honey-700" : "text-ink-950")}>{r.value}</span>
+                <span className={cn("tnum whitespace-nowrap font-mono text-[0.875rem] font-medium", r.danger ? "text-danger-600" : r.warn ? "text-ember-700" : "text-ink-950")}>{r.value}</span>
               </li>
             ))}
           </ul>

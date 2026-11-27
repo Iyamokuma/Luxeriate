@@ -124,7 +124,7 @@ export function RevenueChart({ data, today }: { data: MonthlyCollection[]; today
                     </g>
                   );
                 })}
-                <line x1={pad.l} x2={w - pad.r} y1={base} y2={base} stroke="#d9cfc1" />
+                <line x1={pad.l} x2={w - pad.r} y1={base} y2={base} stroke={C.axis} />
               </svg>
             )}
             {hover !== null && rows[hover] && (

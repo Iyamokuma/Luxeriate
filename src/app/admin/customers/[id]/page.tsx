@@ -30,7 +30,7 @@ export default function CustomerPage({ params }: PageProps<"/admin/customers/[id
   );
 }
 
-const statusTone = { active: "forest", pending_payment: "honey", completed: "ink", cancelled: "neutral" } as const;
+const statusTone = { active: "forest", pending_payment: "tide", completed: "ink", cancelled: "neutral" } as const;
 
 async function CustomerContent({ params }: { params: PageProps<"/admin/customers/[id]">["params"] }) {
   const { id } = await params;
@@ -138,7 +138,7 @@ async function CustomerContent({ params }: { params: PageProps<"/admin/customers
                 <p className="text-xs text-ink-400">{e.next_due_date ? `Next due ${formatDate(e.next_due_date)}` : "Nothing due"}</p>
               </div>
               {e.credit_kobo > 0 && (
-                <p className="rounded-xl bg-honey-50 px-3 py-2 text-sm text-honey-700 sm:col-span-3">
+                <p className="rounded-xl bg-tide-50 px-3 py-2 text-sm text-tide-700 sm:col-span-3">
                   {naira(e.credit_kobo)} is held as credit and will be applied to the next month.
                 </p>
               )}
@@ -185,18 +185,18 @@ async function CustomerContent({ params }: { params: PageProps<"/admin/customers
                           <TD className="tnum font-semibold text-ink-900">{pay.contribution_kobo ? naira(pay.contribution_kobo) : "—"}</TD>
                           <TD>
                             {CHANNEL_LABEL[pay.channel ?? ""] ?? pay.channel ?? "—"}
-                            {pay.provider === "manual" && <Badge tone="honey" size="sm" className="ml-1.5">Offline</Badge>}
+                            {pay.provider === "manual" && <Badge tone="tide" size="sm" className="ml-1.5">Offline</Badge>}
                           </TD>
                           <TD>
                             <Badge tone={pay.status === "success" ? "forest" : pay.status === "pending" ? "neutral" : "danger"} size="sm" dot>
                               {pay.status === "success" ? "Paid" : pay.status === "pending" ? "Started" : pay.status === "abandoned" ? "Abandoned" : "Failed"}
                             </Badge>
-                            {pay.needs_review && <ShieldAlert className="ml-1.5 inline size-4 text-honey-600" aria-label="Needs review" />}
+                            {pay.needs_review && <ShieldAlert className="ml-1.5 inline size-4 text-ember-600" aria-label="Needs review" />}
                           </TD>
                           <TD>
                             {pay.status === "success" && (
                               <Button asChild variant="ghost" size="icon-sm" aria-label="Download receipt">
-                                <a href={`/api/receipts/${pay.id}`} target="_blank" rel="noreferrer">
+                                <a href={`/api/receipts/${pay.id}?team=1`} target="_blank" rel="noreferrer">
                                   <Download />
                                 </a>
                               </Button>
@@ -275,8 +275,8 @@ async function CustomerContent({ params }: { params: PageProps<"/admin/customers
                 )}
               </div>
               {e.savings_return_kobo > 0 && (
-                <div className="flex items-start gap-3 rounded-2xl bg-honey-50 p-3.5">
-                  <Gift className="mt-0.5 size-4 shrink-0 text-honey-700" />
+                <div className="flex items-start gap-3 rounded-2xl bg-leaf-50 p-3.5 ring-1 ring-inset ring-leaf-100">
+                  <Gift className="mt-0.5 size-4 shrink-0 text-leaf-700" />
                   <div>
                     <p className="font-semibold text-ink-900">Savings return {naira(e.savings_return_kobo)}</p>
                     <p className="text-xs text-ink-600">

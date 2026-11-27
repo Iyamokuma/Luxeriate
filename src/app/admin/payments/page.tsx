@@ -252,11 +252,11 @@ async function PaymentsContent({ searchParams }: { searchParams: PageProps<"/adm
                     <TD className="tnum text-right">{p.contribution_kobo ? naira(p.contribution_kobo) : "—"}</TD>
                     <TD className="tnum text-right font-semibold text-ink-900">
                       {naira(p.amount_kobo)}
-                      {p.needs_review && <ShieldAlert className="ml-1 inline size-4 text-honey-600" aria-label="Needs review" />}
+                      {p.needs_review && <ShieldAlert className="ml-1 inline size-4 text-ember-600" aria-label="Needs review" />}
                     </TD>
                     <TD>
                       {CHANNEL_LABEL[p.channel ?? ""] ?? p.channel ?? "—"}
-                      {p.provider === "manual" && <Badge tone="honey" size="sm" className="ml-1.5">Offline</Badge>}
+                      {p.provider === "manual" && <Badge tone="tide" size="sm" className="ml-1.5">Offline</Badge>}
                       {p.status !== "success" && (
                         <Badge tone={p.status === "pending" ? "neutral" : "danger"} size="sm" className="ml-1.5">
                           {p.status}

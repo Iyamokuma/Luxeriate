@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardOverview, Greeting } from "@/components/dashboard/overview";
-import { getSession, homeFor, isStaff } from "@/lib/auth";
+import { getSession, isStaff } from "@/lib/auth";
 import { getEnrollmentDetail, getMyEnrollments, pickEnrollment } from "@/lib/data/customer";
 import { firstName } from "@/lib/format";
 import { firstParam } from "@/lib/utils";
@@ -25,9 +25,9 @@ export default function DashboardPage(props: PageProps<"/dashboard">) {
 
 async function Overview({ searchParams }: { searchParams: PageProps<"/dashboard">["searchParams"] }) {
   const sp = await searchParams;
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) redirect("/login?next=/dashboard");
-  if (isStaff(session.profile)) redirect(homeFor(session.profile));
+  if (isStaff(session.profile)) redirect("/admin");
 
   const enrollments = await getMyEnrollments(session);
   const e = pickEnrollment(enrollments, firstParam(sp.e));

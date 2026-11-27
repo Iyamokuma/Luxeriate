@@ -15,12 +15,13 @@ const LM_D = polyPath(L_POLY) + polyPath(M_POLY);
 
 type Tone = "brand" | "light";
 
+// Arcs read a CSS variable so the dashboards can swap the gold for their leaf accent.
 const TONES: Record<Tone, { letters: string; arcs: string }> = {
-  brand: { letters: BRAND.green, arcs: BRAND.gold },
-  light: { letters: "#fffdf9", arcs: "#ddb343" },
+  brand: { letters: BRAND.green, arcs: `var(--logo-arcs, ${BRAND.gold})` },
+  light: { letters: "#fffdf9", arcs: "var(--logo-arcs-light, #ddb343)" },
 };
 
-/** The LM monogram inside its two gold arcs. */
+/** The LM monogram inside its two arcs (gold on the website, leaf in the dashboards). */
 export function LogoMark({ className, tone = "brand" }: { className?: string; tone?: Tone }) {
   const t = TONES[tone];
   return (
@@ -29,7 +30,7 @@ export function LogoMark({ className, tone = "brand" }: { className?: string; to
       className={cn("h-9 w-auto shrink-0", className)}
       aria-hidden
     >
-      <path fill={t.arcs} d={ARCS_D} />
+      <path style={{ fill: t.arcs }} d={ARCS_D} />
       <path fill={t.letters} d={LM_D} />
     </svg>
   );
@@ -89,7 +90,7 @@ export function LogoFull({ className, tone = "brand" }: { className?: string; to
   const t = TONES[tone];
   return (
     <svg viewBox="213 52 1110 890" className={cn("h-24 w-auto", className)} role="img" aria-label="Luxuriate International Mart Limited">
-      <path fill={t.arcs} d={ARCS_D} />
+      <path style={{ fill: t.arcs }} d={ARCS_D} />
       <path fill={t.letters} d={LM_D} />
       <path fill={t.letters} transform="translate(223 743)" d={WORDMARK.d} />
       <path fill={t.letters} transform="translate(232 899)" d={SUBTITLE.d} />

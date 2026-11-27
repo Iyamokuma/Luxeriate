@@ -96,14 +96,14 @@ function NavList({ allowed, owner = false, onNavigate }: { allowed: NavKey[]; ow
                       className={cn(
                         "group relative flex items-center gap-3 rounded-xl px-3 py-2 text-[0.9375rem] font-medium transition",
                         active
-                          ? "bg-white/[0.09] text-cream shadow-[inset_0_1px_0_rgb(255_255_255/0.06)] before:absolute before:inset-y-2 before:-left-3 before:w-[3px] before:rounded-r-full before:bg-honey-400"
+                          ? "bg-white/[0.09] text-cream shadow-[inset_0_1px_0_rgb(255_255_255/0.06)] before:absolute before:inset-y-2 before:-left-3 before:w-[3px] before:rounded-r-full before:bg-leaf-300"
                           : "text-ink-300 hover:bg-white/[0.05] hover:text-cream",
                       )}
                     >
-                      <Icon className={cn("size-[1.05rem] shrink-0", active || ownerItem ? "text-honey-300" : "text-ink-400 group-hover:text-ink-200")} />
+                      <Icon className={cn("size-[1.05rem] shrink-0", active || ownerItem ? "text-leaf-300" : "text-ink-400 group-hover:text-ink-200")} />
                       {label}
                       {ownerItem && (
-                        <span className="ml-auto rounded-full bg-honey-400/12 px-1.5 py-px font-mono text-[0.5625rem] font-medium uppercase tracking-[0.12em] text-honey-300 ring-1 ring-inset ring-honey-400/25">
+                        <span className="ml-auto rounded-full bg-leaf-300/10 px-1.5 py-px font-mono text-[0.5625rem] font-medium uppercase tracking-[0.12em] text-leaf-300 ring-1 ring-inset ring-leaf-300/25">
                           Owner
                         </span>
                       )}
@@ -124,7 +124,7 @@ export type SidebarUser = { name: string; role: "owner" | "staff"; permissions: 
 export function Sidebar({ allowed, owner, user }: { allowed: NavKey[]; owner?: boolean; user?: SidebarUser }) {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-night text-cream lg:flex">
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_35%_at_0%_0%,rgb(207_158_41/0.10),transparent_70%)]" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_35%_at_0%_0%,rgb(194_232_108/0.08),transparent_70%),radial-gradient(90%_40%_at_100%_100%,rgb(35_120_76/0.22),transparent_70%)]" />
       <div className="relative flex h-16 items-center px-6">
         <Link href="/admin" aria-label="Back office home">
           <Logo light />
@@ -139,7 +139,7 @@ export function Sidebar({ allowed, owner, user }: { allowed: NavKey[]; owner?: b
             <span
               className={cn(
                 "flex size-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
-                user.role === "owner" ? "bg-gradient-to-b from-honey-200 to-honey-400 text-ink-950" : "bg-white/10 text-cream",
+                user.role === "owner" ? "bg-leaf-300 text-forest-950" : "bg-white/10 text-cream",
               )}
               aria-hidden
             >
@@ -150,7 +150,7 @@ export function Sidebar({ allowed, owner, user }: { allowed: NavKey[]; owner?: b
               <p className="flex items-center gap-1 text-xs text-ink-400">
                 {user.role === "owner" ? (
                   <>
-                    <Crown className="size-3 text-honey-300" /> Super admin
+                    <Crown className="size-3 text-leaf-300" /> Super admin
                   </>
                 ) : (
                   `Staff · ${user.permissions} permission${user.permissions === 1 ? "" : "s"}`

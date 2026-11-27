@@ -9,7 +9,7 @@ import type { JourneyPoint } from "@/lib/customer-insights";
 import { formatDate, formatMonth, monthName, naira, nairaShort } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-const PLAN = "#8f867b";
+const PLAN = "#85918a";
 
 /**
  * Money saved against the plan, month by month: the dashed line is what the
@@ -46,7 +46,7 @@ export function JourneyChart({ points }: { points: JourneyPoint[] }) {
     const d = p.saved - p.plan;
     if (d === 0) return { text: "On plan", cls: "text-forest-700" };
     if (d > 0) return { text: `${naira(d)} ahead`, cls: "text-forest-700" };
-    return { text: p.current ? `${naira(-d)} to go` : `${naira(-d)} behind`, cls: p.current ? "text-honey-700" : "text-danger-600" };
+    return { text: p.current ? `${naira(-d)} to go` : `${naira(-d)} behind`, cls: p.current ? "text-tide-700" : "text-danger-600" };
   };
 
   return (
@@ -60,7 +60,7 @@ export function JourneyChart({ points }: { points: JourneyPoint[] }) {
           {now && (
             <div>
               <p className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.14em] text-ink-400">Against plan</p>
-              <p className={cn("tnum mt-1 font-mono text-[1.375rem] font-medium tracking-[-0.02em]", gap >= 0 ? "text-forest-700" : now.current ? "text-honey-700" : "text-danger-600")}>
+              <p className={cn("tnum mt-1 font-mono text-[1.375rem] font-medium tracking-[-0.02em]", gap >= 0 ? "text-forest-700" : now.current ? "text-tide-700" : "text-danger-600")}>
                 {gap === 0 ? "On plan" : `${gap > 0 ? "+" : "−"}${nairaShort(Math.abs(gap))}`}
               </p>
             </div>
@@ -120,21 +120,21 @@ export function JourneyChart({ points }: { points: JourneyPoint[] }) {
                     </text>
                   </g>
                 ))}
-                <line x1={pad.l} x2={w - pad.r} y1={base} y2={base} stroke="#d9cfc1" />
+                <line x1={pad.l} x2={w - pad.r} y1={base} y2={base} stroke={C.axis} />
                 {points.map((p, i) => (
                   <text key={p.month} x={x(i)} y={H - 7} textAnchor="middle" className={cn("text-[11px]", p.current ? "fill-ink-900 font-semibold" : "fill-ink-400")}>
                     {monthName(p.month).slice(0, slot < 34 ? 1 : 3)}
                   </text>
                 ))}
-                {hover !== null && <line x1={x(hover)} x2={x(hover)} y1={pad.t - 6} y2={base} stroke="#b5ada2" strokeDasharray="2 3" />}
+                {hover !== null && <line x1={x(hover)} x2={x(hover)} y1={pad.t - 6} y2={base} stroke={C.neutral} strokeDasharray="2 3" />}
                 <path d={monotonePath(planPts)} fill="none" stroke={PLAN} strokeWidth={2} strokeDasharray="5 5" strokeLinecap="round" />
                 {savedArea && <path d={savedArea} fill="url(#journey-fill)" />}
                 {savedLine && <path d={savedLine} fill="none" stroke={C.contributions} strokeWidth={2.25} strokeLinejoin="round" strokeLinecap="round" />}
-                {now && <circle cx={x(nowIdx)} cy={y(now.saved!)} r={5} fill={C.contributions} stroke="#fffdf9" strokeWidth={2.5} />}
+                {now && <circle cx={x(nowIdx)} cy={y(now.saved!)} r={5} fill={C.contributions} stroke={C.surface} strokeWidth={2.5} />}
                 {hover !== null && points[hover].saved !== null && hover !== nowIdx && (
-                  <circle cx={x(hover)} cy={y(points[hover].saved!)} r={4.5} fill={C.contributions} stroke="#fffdf9" strokeWidth={2} />
+                  <circle cx={x(hover)} cy={y(points[hover].saved!)} r={4.5} fill={C.contributions} stroke={C.surface} strokeWidth={2} />
                 )}
-                {hover !== null && <circle cx={x(hover)} cy={y(points[hover].plan)} r={4} fill="#fffdf9" stroke={PLAN} strokeWidth={2} />}
+                {hover !== null && <circle cx={x(hover)} cy={y(points[hover].plan)} r={4} fill={C.surface} stroke={PLAN} strokeWidth={2} />}
                 {/* direct labels */}
                 {planPts.length > 0 && (
                   <text x={planPts[planPts.length - 1][0]} y={planPts[planPts.length - 1][1] - 10} textAnchor="end" className="fill-ink-500 text-[11px] font-semibold">

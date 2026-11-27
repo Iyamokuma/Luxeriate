@@ -33,7 +33,7 @@ export default function PaymentsPage() {
 const stateTone = { paid: "forest", due: "clay", late: "danger", upcoming: "neutral", cancelled: "neutral" } as const;
 
 async function PaymentsContent() {
-  const session = await getSession();
+  const session = await getSession("customer");
   if (!session) redirect("/login?next=/dashboard/payments");
   const enrollments = await getMyEnrollments(session);
   if (!enrollments.length) {
@@ -117,7 +117,7 @@ async function PaymentsContent() {
                           <TD className="text-ink-900">{formatDateTime(p.paid_at)}</TD>
                           <TD>
                             {p.months_label ?? "—"}
-                            {p.registration_kobo > 0 && <Badge tone="honey" size="sm" className="ml-2">+ registration</Badge>}
+                            {p.registration_kobo > 0 && <Badge tone="tide" size="sm" className="ml-2">+ registration</Badge>}
                           </TD>
                           <TD>{CHANNEL_LABEL[p.channel ?? ""] ?? p.channel ?? "—"}</TD>
                           <TD className="font-mono text-xs">{p.receipt_number}</TD>

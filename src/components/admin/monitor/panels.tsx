@@ -64,7 +64,7 @@ export function SectionTitle({ index, title, description }: { index: string; tit
   return (
     <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-line pb-3.5">
       <h2 className="flex items-baseline gap-3 text-[1.375rem] font-bold tracking-[-0.025em] text-ink-900">
-        <span className="font-mono text-[0.75rem] font-medium tracking-normal text-honey-600">{index}</span>
+        <span className="font-mono text-[0.75rem] font-medium tracking-normal text-leaf-700">{index}</span>
         {title}
       </h2>
       <p className="text-sm text-ink-500">{description}</p>
@@ -86,7 +86,7 @@ function Figure({ label, value, sub, tone }: { label: string; value: React.React
 
 const STATUS_META: Record<HealthStatus, { label: string; dot: string; text: string; ring: string }> = {
   ok: { label: "Healthy", dot: "bg-forest-400", text: "text-forest-300", ring: "ring-forest-400/25" },
-  warn: { label: "Needs attention", dot: "bg-honey-400", text: "text-honey-300", ring: "ring-honey-400/25" },
+  warn: { label: "Needs attention", dot: "bg-ember-400", text: "text-ember-300", ring: "ring-ember-400/25" },
   error: { label: "Problem", dot: "bg-[#e0685d]", text: "text-[#f0958c]", ring: "ring-[#e0685d]/30" },
   idle: { label: "Waiting", dot: "bg-ink-400", text: "text-ink-300", ring: "ring-white/10" },
 };
@@ -178,7 +178,7 @@ export function TodayPanel({ rows }: { rows: { label: string; value: string; sub
               <span className="block text-[0.8125rem] font-medium text-ink-200">{r.label}</span>
               {r.sub && <span className="block text-xs text-ink-400">{r.sub}</span>}
             </span>
-            <span className="tnum font-mono text-sm font-medium text-honey-200">{r.value}</span>
+            <span className="tnum font-mono text-sm font-medium text-leaf-200">{r.value}</span>
           </li>
         ))}
       </ul>
@@ -219,7 +219,7 @@ export function AttentionStrip({ items }: { items: AttentionItem[] }) {
   return (
     <div>
       <p className="mb-3 flex items-center gap-2 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-ink-500">
-        <CircleAlert className="size-3.5 text-honey-600" /> Needs a person
+        <CircleAlert className="size-3.5 text-ember-600" /> Needs a person
       </p>
       <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {items.map((i) => (
@@ -228,13 +228,13 @@ export function AttentionStrip({ items }: { items: AttentionItem[] }) {
               href={i.href}
               className={cn(
                 "group flex h-full items-center gap-3.5 rounded-2xl border px-4 py-3.5 transition",
-                i.tone === "danger" ? "border-danger-100 bg-danger-50/70 hover:bg-danger-50" : "border-honey-200/80 bg-honey-50/80 hover:bg-honey-50",
+                i.tone === "danger" ? "border-danger-100 bg-danger-50/70 hover:bg-danger-50" : "border-ember-200/80 bg-ember-50/80 hover:bg-ember-50",
               )}
             >
               <span
                 className={cn(
                   "tnum flex h-9 min-w-9 items-center justify-center rounded-xl px-2 font-mono text-sm font-medium",
-                  i.tone === "danger" ? "bg-danger-100 text-danger-700" : "bg-honey-100 text-honey-700",
+                  i.tone === "danger" ? "bg-danger-100 text-danger-700" : "bg-ember-100 text-ember-700",
                 )}
               >
                 {i.count}
@@ -567,7 +567,7 @@ export function PackageTable({ rows, year }: { rows: PackageRow[]; year: number 
 // ─────────────────────────────────────────────────────────────────────────────
 export function Pipeline({ f, year }: { f: NonNullable<SystemMonitor["operations"]>["fulfilment"]; year: number }) {
   const stages = [
-    { key: "not_started", label: "Not started", value: Number(f.not_started), color: "#d8d0c5" },
+    { key: "not_started", label: "Not started", value: Number(f.not_started), color: "#d2d9d3" },
     { key: "preparing", label: "Preparing", value: Number(f.preparing), color: "#b2d6c0" },
     { key: "ready", label: "Ready", value: Number(f.ready), color: "#4d986f" },
     { key: "collection_scheduled", label: "Scheduled", value: Number(f.collection_scheduled), color: "#23784c" },
@@ -612,7 +612,7 @@ export function Pipeline({ f, year }: { f: NonNullable<SystemMonitor["operations
 const STREAM_META: Record<SystemMonitor["stream"][number]["kind"], { icon: React.ComponentType<{ className?: string }>; tone: string; verb: string }> = {
   payment: { icon: HandCoins, tone: "bg-forest-50 text-forest-700", verb: "Paid" },
   payment_failed: { icon: XCircle, tone: "bg-danger-50 text-danger-600", verb: "Payment didn't go through" },
-  signup: { icon: UserPlus, tone: "bg-honey-50 text-honey-700", verb: "New registration" },
+  signup: { icon: UserPlus, tone: "bg-leaf-100 text-leaf-800", verb: "New registration" },
   completed: { icon: BadgeCheck, tone: "bg-forest-100 text-forest-800", verb: "Package complete" },
   email_failed: { icon: MailWarning, tone: "bg-danger-50 text-danger-600", verb: "Email failed" },
   staff: { icon: UserCog, tone: "bg-sand text-ink-600", verb: "Staff" },
@@ -726,7 +726,7 @@ function MemberRows({ members }: { members: NonNullable<SystemMonitor["team"]>["
               </td>
               <td className="px-3 py-3">
                 {m.role === "owner" ? (
-                  <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-ink-900 px-2.5 py-1 text-[0.6875rem] font-semibold text-honey-200" title="Owners hold every permission">
+                  <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-ink-900 px-2.5 py-1 text-[0.6875rem] font-semibold text-leaf-200" title="Owners hold every permission">
                     <ShieldCheck className="size-3" /> Owner
                   </span>
                 ) : (
@@ -765,7 +765,7 @@ export function Readiness({ items }: { items: ReadinessItem[] }) {
             cy="28"
             r={r}
             fill="none"
-            stroke={C.gold}
+            stroke={C.spark}
             strokeWidth="5"
             strokeLinecap="round"
             strokeDasharray={`${(done / items.length) * circ} ${circ}`}
@@ -784,11 +784,11 @@ export function Readiness({ items }: { items: ReadinessItem[] }) {
         {items.map((i) => {
           const row = (
             <>
-              <span className={cn("flex size-5 shrink-0 items-center justify-center rounded-full", i.ok ? "bg-forest-100 text-forest-700" : "bg-honey-100 text-honey-700")}>
+              <span className={cn("flex size-5 shrink-0 items-center justify-center rounded-full", i.ok ? "bg-forest-100 text-forest-700" : "bg-ember-100 text-ember-700")}>
                 {i.ok ? <Check className="size-3" strokeWidth={3} /> : <Minus className="size-3" strokeWidth={3} />}
               </span>
               <span className="min-w-0 flex-1 text-sm font-medium text-ink-800">{i.label}</span>
-              <span className={cn("truncate text-right text-xs", i.ok ? "text-ink-400" : "font-medium text-honey-700")}>{i.detail}</span>
+              <span className={cn("truncate text-right text-xs", i.ok ? "text-ink-400" : "font-medium text-ember-700")}>{i.detail}</span>
             </>
           );
           return (
