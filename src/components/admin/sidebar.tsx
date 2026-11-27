@@ -6,6 +6,7 @@ import { useState } from "react";
 import {
   Activity,
   BarChart3,
+  Crown,
   Gift,
   HandCoins,
   LayoutDashboard,
@@ -24,13 +25,16 @@ import { Sheet, SheetContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 export type NavKey =
-  | "overview" | "customers" | "payments" | "packages" | "procurement" | "fulfilment" | "savings"
+  | "executive" | "overview" | "customers" | "payments" | "packages" | "procurement" | "fulfilment" | "savings"
   | "referrals" | "emails" | "reports" | "staff" | "activity" | "settings";
 
 const GROUPS: { label: string; items: { key: NavKey; href: string; label: string; icon: React.ComponentType<{ className?: string }> }[] }[] = [
   {
     label: "",
-    items: [{ key: "overview", href: "/admin", label: "Overview", icon: LayoutDashboard }],
+    items: [
+      { key: "executive", href: "/admin/executive", label: "Executive brief", icon: Crown },
+      { key: "overview", href: "/admin", label: "Command centre", icon: LayoutDashboard },
+    ],
   },
   {
     label: "Customers & money",
@@ -77,6 +81,7 @@ function NavList({ allowed, onNavigate }: { allowed: NavKey[]; onNavigate?: () =
             <ul className="space-y-0.5">
               {items.map(({ key, href, label, icon: Icon }) => {
                 const active = href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
+                const owner = key === "executive";
                 return (
                   <li key={key}>
                     <Link
@@ -89,8 +94,13 @@ function NavList({ allowed, onNavigate }: { allowed: NavKey[]; onNavigate?: () =
                           : "text-ink-300 hover:bg-white/[0.05] hover:text-cream",
                       )}
                     >
-                      <Icon className={cn("size-[1.05rem] shrink-0", active ? "text-honey-300" : "text-ink-400 group-hover:text-ink-200")} />
+                      <Icon className={cn("size-[1.05rem] shrink-0", active || owner ? "text-honey-300" : "text-ink-400 group-hover:text-ink-200")} />
                       {label}
+                      {owner && (
+                        <span className="ml-auto rounded-full bg-honey-400/12 px-1.5 py-px font-mono text-[0.5625rem] font-medium uppercase tracking-[0.12em] text-honey-300 ring-1 ring-inset ring-honey-400/25">
+                          Owner
+                        </span>
+                      )}
                     </Link>
                   </li>
                 );
@@ -103,7 +113,9 @@ function NavList({ allowed, onNavigate }: { allowed: NavKey[]; onNavigate?: () =
   );
 }
 
-export function Sidebar({ allowed }: { allowed: NavKey[] }) {
+export type SidebarUser = { name: string; role: "owner" | "staff"; permissions: number };
+
+export function Sidebar({ allowed, user }: { allowed: NavKey[]; user?: SidebarUser }) {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-night text-cream lg:flex">
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_35%_at_0%_0%,rgb(207_158_41/0.10),transparent_70%)]" />
@@ -115,8 +127,34 @@ export function Sidebar({ allowed }: { allowed: NavKey[] }) {
       <div className="relative flex-1 overflow-y-auto py-4">
         <NavList allowed={allowed} />
       </div>
-      <div className="relative border-t border-white/10 px-6 py-4">
-        <p className="eyebrow text-ink-400">Back office</p>
+      <div className="relative border-t border-white/10 px-4 py-4">
+        {user ? (
+          <div className="flex items-center gap-3 rounded-xl bg-white/[0.04] px-3 py-2.5 ring-1 ring-inset ring-white/[0.06]">
+            <span
+              className={cn(
+                "flex size-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
+                user.role === "owner" ? "bg-gradient-to-b from-honey-200 to-honey-400 text-ink-950" : "bg-white/10 text-cream",
+              )}
+              aria-hidden
+            >
+              {user.name.trim().split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase()}
+            </span>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-cream">{user.name}</p>
+              <p className="flex items-center gap-1 text-xs text-ink-400">
+                {user.role === "owner" ? (
+                  <>
+                    <Crown className="size-3 text-honey-300" /> Super admin
+                  </>
+                ) : (
+                  `Staff · ${user.permissions} permission${user.permissions === 1 ? "" : "s"}`
+                )}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <p className="eyebrow px-2 text-ink-400">Back office</p>
+        )}
       </div>
     </aside>
   );

@@ -19,6 +19,8 @@ export const buttonVariants = cva(
         danger: "bg-danger-600 text-white shadow-soft hover:bg-danger-700",
         "danger-ghost": "text-danger-600 hover:bg-danger-50",
         light: "bg-cream text-forest-900 shadow-soft hover:bg-white",
+        gold:
+          "bg-gradient-to-b from-honey-200 to-honey-400 text-ink-950 shadow-[inset_0_1px_0_rgb(255_255_255/0.55),0_1px_2px_rgb(80_55_10/0.45),0_12px_28px_-12px_rgb(207_158_41/0.8)] hover:from-honey-100 hover:to-honey-300",
         "outline-light": "border border-white/25 text-cream hover:bg-white/10",
         link: "h-auto px-0 text-forest-700 underline-offset-4 hover:underline active:scale-100",
       },

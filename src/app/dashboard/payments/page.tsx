@@ -10,8 +10,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableWrap, TD, TH, THead, TR } from "@/components/ui/table";
 import { getSession } from "@/lib/auth";
 import { getEnrollmentDetail, getMyEnrollments } from "@/lib/data/customer";
-import { CHANNEL_LABEL, INSTALLMENT_LABEL } from "@/lib/constants";
-import { formatDate, formatDateTime, formatMonth, naira } from "@/lib/format";
+import { CHANNEL_LABEL, ENROLLMENT_LABEL, INSTALLMENT_LABEL } from "@/lib/constants";
+import { formatDate, formatDateTime, formatMonth, naira, percent, plural } from "@/lib/format";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Payments & receipts" };
 
@@ -43,12 +44,53 @@ async function PaymentsContent() {
     );
   }
   const details = await Promise.all(enrollments.map((e) => getEnrollmentDetail(session, e.id).then((d) => ({ e, ...d }))));
+  const allPayments = details.flatMap((d) => d.payments);
+  const totalPaid = allPayments.reduce((t, p) => t + Number(p.amount_kobo), 0);
+  const nextDue = details
+    .filter((d) => d.e.status === "active")
+    .flatMap((d) => d.installments.filter((i) => !i.paid_at).slice(0, 1).map((i) => ({ i, e: d.e })))
+    .sort((a, b) => a.i.due_date.localeCompare(b.i.due_date))[0];
+  const remaining = details.filter((d) => d.e.status === "active").reduce((t, d) => t + Number(d.e.outstanding_kobo), 0);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
+      <dl className="grid grid-cols-2 overflow-hidden rounded-[1.25rem] border border-line bg-cream shadow-soft lg:grid-cols-4">
+        <Summary label="Paid in total" value={naira(totalPaid)} sub="Registration included" />
+        <Summary label="Receipts" value={String(allPayments.length)} sub={plural(enrollments.length, "plan")} />
+        <Summary
+          label="Next payment"
+          value={nextDue ? formatDate(nextDue.i.due_date, "short") : "—"}
+          sub={nextDue ? `${naira(nextDue.i.amount_kobo)} · ${nextDue.e.package_name}` : "Nothing scheduled"}
+        />
+        <Summary label="Still to pay" value={naira(remaining)} sub="Across active plans" />
+      </dl>
+
       {details.map(({ e, payments, installments }) => (
-        <div key={e.id} className="space-y-5">
-          {enrollments.length > 1 && <h2 className="font-display text-xl font-semibold text-ink-900">{e.package_name}</h2>}
+        <section key={e.id} className="space-y-5">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-ink-400">
+                {e.cycle_year} cycle{e.customer_code ? ` · ${e.customer_code}` : ""}
+              </p>
+              <h2 className="mt-1 flex items-center gap-2.5 text-2xl font-semibold tracking-tight text-ink-900">
+                {e.package_name}
+                <Badge tone={e.status === "completed" ? "ink" : e.status === "active" ? (e.late_count ? "danger" : "forest") : "neutral"} size="sm">
+                  {e.status === "active" && e.late_count ? `${e.late_count} late` : ENROLLMENT_LABEL[e.status]}
+                </Badge>
+              </h2>
+            </div>
+            <div className="w-full max-w-xs">
+              <div className="flex justify-between text-xs text-ink-500">
+                <span className="tnum">
+                  {naira(e.paid_kobo)} of {naira(e.total_kobo)}
+                </span>
+                <span className="tnum font-semibold text-ink-900">{percent(e.paid_kobo, e.total_kobo)}%</span>
+              </div>
+              <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-ink-100">
+                <div className={cn("h-full rounded-full", e.late_count ? "bg-danger-500" : "bg-forest-600")} style={{ width: `${percent(e.paid_kobo, e.total_kobo)}%` }} />
+              </div>
+            </div>
+          </div>
           <Card className="overflow-hidden">
             <CardHeader>
               <CardTitle>Receipts</CardTitle>
@@ -134,8 +176,18 @@ async function PaymentsContent() {
               </TableWrap>
             </CardContent>
           </Card>
-        </div>
+        </section>
       ))}
+    </div>
+  );
+}
+
+function Summary({ label, value, sub }: { label: string; value: string; sub: string }) {
+  return (
+    <div className="min-w-0 border-line px-5 py-5 odd:border-r sm:px-6 lg:border-r lg:last:border-r-0 [&:nth-child(-n+2)]:border-b lg:[&:nth-child(-n+2)]:border-b-0">
+      <dt className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-ink-400">{label}</dt>
+      <dd className="tnum mt-1.5 truncate text-[1.375rem] font-semibold tracking-[-0.02em] text-ink-950">{value}</dd>
+      <dd className="mt-0.5 truncate text-xs text-ink-400">{sub}</dd>
     </div>
   );
 }

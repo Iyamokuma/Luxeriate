@@ -19,6 +19,7 @@ export const SAMPLE_VARS: Record<string, string> = {
   collection_address: "Admiralty Way, Lekki Phase 1",
   collection_date: "20 Dec 2027, 10:00 am",
   referral_code: "FUNMI2027",
+  login_email: "funmi@example.com",
   savings_return: "₦30,000",
   savings_line: "Your savings return of **₦30,000** will be paid to you separately.",
   reference_line: "Transfer reference: **TRF-88231**",

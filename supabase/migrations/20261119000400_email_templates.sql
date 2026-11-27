@@ -10,8 +10,8 @@ insert into public.email_templates (key, name, description, subject, body, varia
   'Welcome',
   'Sent the moment the first payment is confirmed and the account becomes active.',
   'Welcome to Luxuriate, {{first_name}}. Your customer ID is {{customer_id}}',
-  E'Hi {{first_name}},\n\nYour payment is confirmed and your {{package_name}} package is now active. Welcome to the Luxuriate family.\n\n**Customer ID:** {{customer_id}}\n**Package:** {{package_name}}, {{monthly_amount}} a month\n**Collection point:** {{collection_point}}\n\nWe will email you a few days before each monthly payment is due, and you can pay in a few taps from your dashboard.\n\n[[Open your dashboard|{{dashboard_url}}]]\n\nYour referral code is **{{referral_code}}**. Share it with friends and family when they join.',
-  array['first_name','full_name','customer_id','package_name','monthly_amount','collection_point','referral_code','dashboard_url']
+  E'Hi {{first_name}},\n\nYour payment is confirmed and your {{package_name}} package is now active. Welcome to the Luxuriate family.\n\n**Customer ID:** {{customer_id}}\n**Package:** {{package_name}}, {{monthly_amount}} a month\n**Collection point:** {{collection_point}}\n\n**Sign in with:** {{login_email}}\n**Password:** the one you chose when you registered\n\n[[Log in to your dashboard|{{login_url}}]]\n\nForgot your password? Reset it any time at {{reset_url}}\n\nWe will email you a few days before each monthly payment is due, and you can pay in a few taps from your dashboard.\n\nYour referral code is **{{referral_code}}**. Share it with friends and family when they join.',
+  array['first_name','full_name','customer_id','package_name','monthly_amount','collection_point','referral_code','login_email','login_url','reset_url','dashboard_url']
 ),
 (
   'payment_confirmation',

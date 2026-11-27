@@ -239,12 +239,19 @@ export function mountPantry({
   canvas,
   reduce,
   onState,
+  filled,
 }: {
   host: HTMLElement;
   canvas: HTMLCanvasElement;
   reduce: boolean;
   onState: (s: PantryState) => void;
+  /**
+   * A customer's own box: drop in this many items (0–12) once, then hold,
+   * instead of looping the whole year.
+   */
+  filled?: number;
 }) {
+  const hold = filled === undefined ? null : Math.max(0, Math.min(12, Math.round(filled)));
   let renderer: InstanceType<typeof THREE.WebGLRenderer>;
   try {
     renderer = createRenderer(canvas, 2);
@@ -498,12 +505,12 @@ export function mountPantry({
   };
 
   const tmpRot = new THREE.Euler();
-  const placeItems = (tc: number) => {
+  const placeItems = (tc: number, limit = items.length) => {
     let landed = 0;
     items.forEach((it, i) => {
       const s = START + i * STEP;
       const o = it.obj;
-      if (tc < s) {
+      if (tc < s || i >= limit) {
         o.visible = false;
         return;
       }
@@ -540,7 +547,16 @@ export function mountPantry({
     root.rotation.y = -0.5 + (reduce ? 0 : Math.sin(t * 0.22) * 0.1) + lean.x * 0.22 + turn;
     root.rotation.x = lean.y * 0.06;
 
-    if (reduce) {
+    if (hold !== null) {
+      // fill once to the customer's month, then rest there
+      const landed = placeItems(reduce ? 1e6 : t, hold);
+      const done = landed >= hold;
+      const end = START + Math.max(0, hold - 1) * STEP + FALL + SETTLE;
+      const hop = !reduce && done && hold === 12 && t - end < 0.6 ? Math.sin(((t - end) / 0.6) * Math.PI) : 0;
+      cart.position.set(0, Math.max(0, hop) * 0.18, 0);
+      cart.rotation.set(0, 0, 0);
+      emit(done && hold === 12 ? "complete" : "filling", landed);
+    } else if (reduce) {
       placeItems(1e6);
       cart.position.set(0, 0, 0);
       emit("complete", 12);

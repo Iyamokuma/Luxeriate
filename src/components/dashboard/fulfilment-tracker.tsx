@@ -41,7 +41,16 @@ export function FulfilmentTracker({ enrollment }: { enrollment: EnrollmentOvervi
             >
               {i < idx ? <Check className="size-3.5" strokeWidth={3} /> : i + 1}
             </span>
-            <span className={cn("text-[0.6875rem] font-semibold leading-tight sm:text-xs", i <= idx ? "text-ink-900" : "text-ink-400")}>{s.label}</span>
+            <span
+              className={cn(
+                "whitespace-nowrap text-[0.6875rem] font-semibold leading-tight sm:whitespace-normal sm:text-xs",
+                i <= idx ? "text-ink-900" : "text-ink-400",
+                // on a phone only the current step is named; the rest are numbered circles
+                i !== idx && "max-sm:sr-only",
+              )}
+            >
+              {s.label}
+            </span>
           </li>
         ))}
       </ol>

@@ -1,4 +1,5 @@
-import { ShieldCheck, TriangleAlert } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Crown, ShieldCheck, TriangleAlert } from "lucide-react";
 import { ArcsMotif } from "@/components/ui/logo";
 import { LiveRefresh } from "@/components/admin/realtime";
 import { YearSwitcher } from "@/components/admin/url-controls";
@@ -129,6 +130,15 @@ export function OverviewView({ name, owner, years, year, monitor, monitorError, 
               <LagosClock className="text-ink-300" />
             </div>
             <div className="flex items-center gap-2">
+              {owner && (
+                <Link
+                  href={`/admin/executive?year=${year}`}
+                  className="group hidden items-center gap-1.5 rounded-full bg-white/[0.05] px-3 py-1.5 text-xs font-semibold text-ink-200 ring-1 ring-inset ring-white/10 transition hover:bg-white/10 hover:text-cream sm:inline-flex"
+                >
+                  <Crown className="size-3.5 text-honey-300" /> Executive brief
+                  <ArrowUpRight className="size-3 text-ink-400 transition group-hover:text-cream" />
+                </Link>
+              )}
               <LiveRefresh dark every={60_000} tables={LIVE_TABLES} />
               <YearSwitcher dark years={years} year={year} />
             </div>

@@ -62,6 +62,8 @@ export async function authorize(permission?: Permission) {
   return { ok: true as const, session };
 }
 
+/** Where someone lands after signing in: the owner's executive brief, the staff command centre, or the customer dashboard. */
 export function homeFor(profile: Pick<Profile, "role" | "is_active"> | null | undefined) {
-  return isStaff(profile) ? "/admin" : "/dashboard";
+  if (!isStaff(profile)) return "/dashboard";
+  return profile?.role === "owner" ? "/admin/executive" : "/admin";
 }

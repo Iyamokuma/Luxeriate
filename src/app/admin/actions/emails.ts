@@ -46,7 +46,7 @@ export async function sendTestEmail(subject: string, body: string) {
   const auth = await authorize("emails.manage");
   if (!auth.ok) return auth;
   const { data: s } = await auth.session.supabase.from("app_settings").select("business_name").eq("id", 1).single();
-  const vars = { ...SAMPLE_VARS, site_url: env.siteUrl, dashboard_url: `${env.siteUrl}/dashboard`, pay_url: `${env.siteUrl}/dashboard?pay=1`, receipt_url: `${env.siteUrl}/dashboard/payments`, action_url: `${env.siteUrl}/login` };
+  const vars = { ...SAMPLE_VARS, site_url: env.siteUrl, dashboard_url: `${env.siteUrl}/dashboard`, pay_url: `${env.siteUrl}/dashboard?pay=1`, receipt_url: `${env.siteUrl}/dashboard/payments`, action_url: `${env.siteUrl}/login`, login_url: `${env.siteUrl}/login`, reset_url: `${env.siteUrl}/forgot-password` };
   const rendered = await renderEmail({ subject: `[Test] ${subject}`, body }, vars, s?.business_name ?? "Luxuriate Foodstuff");
   const r = await sendEmail({ to: auth.session.email, ...rendered });
   return r.ok ? { ok: true as const, to: auth.session.email } : { ok: false as const, error: `Sending failed: ${r.error}` };

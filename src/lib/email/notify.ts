@@ -27,6 +27,8 @@ function baseVars(businessName: string): Vars {
     site_url: env.siteUrl,
     dashboard_url: `${env.siteUrl}/dashboard`,
     pay_url: `${env.siteUrl}/dashboard?pay=1`,
+    login_url: `${env.siteUrl}/login`,
+    reset_url: `${env.siteUrl}/forgot-password`,
   };
 }
 
@@ -115,6 +117,7 @@ export async function notifyPaymentResult(r: FinalizeResult) {
       dedupeKey: `welcome:${r.enrollment_id}`,
       vars: {
         ...common,
+        login_email: r.email,
         monthly_amount: naira(e?.monthly_amount_kobo),
         collection_point: e?.collection_point_name ?? "your chosen collection point",
         referral_code: r.referral_code ?? e?.referral_code ?? "",

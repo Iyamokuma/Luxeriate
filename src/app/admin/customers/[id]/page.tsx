@@ -150,7 +150,7 @@ async function CustomerContent({ params }: { params: PageProps<"/admin/customers
               <CardTitle>Schedule</CardTitle>
             </CardHeader>
             <CardContent>
-              <MonthGrid installments={installments} />
+              <MonthGrid installments={installments} compact />
             </CardContent>
           </Card>
 

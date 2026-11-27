@@ -18,9 +18,10 @@ Customers choose a foodstuff package, register, pay monthly contributions throug
 | First payment = registration fee + first month | Computed by the database (`prepare_payment`), never by the browser |
 | Customer ID on confirmed payment (`LUX-2027-000001`) | `finalize_payment` in the database |
 | Monthly reminders | `/api/cron/reminders`, run daily |
-| Customer dashboard (progress, month by month, receipts, referral code) | `/dashboard`, `/dashboard/payments`, `/dashboard/referrals`, `/dashboard/profile` |
+| Customer dashboard | `/dashboard`: opens on the plan that needs attention first (late, then due, then a package waiting to be collected). A charcoal-and-gold hero says where the plan stands and what to pay, beside the customer's own 3D package box filled with one item per month paid. Below: savings against the plan, their on-time record, the year month by month, what's in their box, receipts, referral code and activity. Also `/dashboard/payments` (totals across plans, receipts, schedule), `/dashboard/referrals`, `/dashboard/profile` |
 | Downloadable receipts | `/api/receipts/[id]` (branded PDF) |
 | Completion, fulfilment steps, savings return status | Dashboard tracker and timeline |
+| Executive brief (owner only, the super admin's home page) | `/admin/executive`: the cycle's booked value against what's collected, a scorecard against the previous cycle, collection, overdue, completion, renewal and referral rates, 12 months of revenue, where the money stands (received, still to come, promised back, costs), package mix, loyalty and top referrers, customers behind on payments with one-tap call and pre-written WhatsApp messages, stalled registrations, the team and recent sensitive changes. Staff who open it are sent to the command centre |
 | Command centre: money, customers, packages, fulfilment, emails, team, system health and launch readiness on one page, with a live event stream | `/admin` (updates by itself through Supabase Realtime; each staff member sees only what their permissions allow) |
 | Customers (search, profile, history, Excel export) | `/admin/customers` |
 | Payments (Paid / Unpaid / Late / Completed; registration fees on their own line) | `/admin/payments` |
@@ -90,7 +91,30 @@ Copy `.env.example` to `.env.local` and fill it in. On Vercel, add the same vari
 pnpm create-owner owner@example.com "Owner Name" "a-strong-password"
 ```
 
-Sign in at `/login` and you'll land in the back office. Invite staff from **Admin → Staff**; they get an email to set their password.
+Sign in at `/login` and you'll land on the executive brief. Invite staff from **Admin → Staff**; they get an email to set their password and land in the command centre.
+
+### Trying it with demo data
+
+```bash
+pnpm demo:seed       # an owner, two staff and 34 customers with backdated payments
+pnpm demo:password   # a new password for every demo account
+pnpm demo:clear      # removes all of it
+```
+
+The seed copies five packages into a closed 2026 cycle (the public site only shows the newest open cycle) and signs customers up to both 2026 and 2027, so every state has something to show: on track, due, late, completed, each fulfilment step, savings returns, referrals, a payment flagged for review and failed checkouts. Payments go through `create_enrollment`, `prepare_payment` and `finalize_payment` in date order, so the ledger balances as it would for real.
+
+Every demo account uses an `@luxuriate.test` address and shares one password, generated on each run and printed once by `demo:seed` or `demo:password` (it is never stored in the repository). The demo owner is a real owner account on the database in `.env.local`, so keep that password private:
+
+| Account | Shows |
+|---|---|
+| `owner@luxuriate.test` | Executive brief and the whole back office |
+| `chidi@luxuriate.test`, `bisi@luxuriate.test` | Staff with the Operations and Payments clerk permissions |
+| `amara@luxuriate.test` | Two plans, a month due now, three referrals |
+| `ngozi@luxuriate.test` | A finished plan with collection booked, plus a new 2027 plan |
+| `seun@luxuriate.test` | Three months overdue |
+| `tayo@luxuriate.test` | Registered, not yet paid |
+
+`pnpm demo:clear` deletes the demo accounts (and with them their enrollments and payments), their emails and log entries and the 2026 demo packages, then winds the customer ID and receipt counters back to the highest number still in use. **Run it before launch.**
 
 ## 4. Paystack
 
@@ -141,6 +165,7 @@ Set `PAYSTACK_TEST_MODE=true` and leave `PAYSTACK_SECRET_KEY` empty. Checkout th
 
 ## Go-live checklist
 
+- [ ] Demo data removed with `pnpm demo:clear` (if it was ever seeded)
 - [ ] Final 2027 packages, items and savings returns entered (Admin → Packages)
 - [ ] Collection points and addresses (Admin → Settings → Collection points)
 - [ ] Luxuriate's terms and conditions published (Admin → Settings → Terms)
@@ -161,6 +186,7 @@ supabase/
 scripts/
   test-db.ts       database test-suite (PGlite)
   create-owner.ts  create or promote the owner account
+  demo-data.ts     seed or clear demo accounts and payments (pnpm demo:seed / demo:clear)
 src/
   app/
     (marketing)/   homepage, package pages, terms
@@ -175,7 +201,8 @@ src/
     paystack.ts    Paystack API client and webhook signature check
     email/         template rendering, providers, notifications
     pdf/           receipt and report documents
-    data/          data access (catalogue, customer, admin), Nigerian states and LGAs
+    data/          data access (catalogue, customer, admin, executive brief), Nigerian states and LGAs
+    customer-insights.ts  where a plan stands, the on-time record and savings against plan
   proxy.ts         session refresh and sign-in redirects (Next 16's middleware)
 ```
 

@@ -10,6 +10,9 @@
     "typecheck": "tsc --noEmit",
     "test:db": "tsx scripts/test-db.ts",
     "create-owner": "tsx --env-file=.env.local scripts/create-owner.ts",
+    "demo:seed": "tsx --env-file=.env.local scripts/demo-data.ts seed",
+    "demo:password": "tsx --env-file=.env.local scripts/demo-data.ts password",
+    "demo:clear": "tsx --env-file=.env.local scripts/demo-data.ts clear",
     "db:push": "supabase db push",
     "db:types": "supabase gen types typescript --linked > src/types/supabase.ts"
   },

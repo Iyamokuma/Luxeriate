@@ -38,7 +38,7 @@ export function TemplateSwitch({ templateKey, enabled }: { templateKey: string; 
 
 function Preview({ subject, body, businessName, siteUrl }: { subject: string; body: string; businessName: string; siteUrl: string }) {
   const vars = useMemo(
-    () => ({ ...SAMPLE_VARS, site_url: siteUrl, dashboard_url: `${siteUrl}/dashboard`, pay_url: `${siteUrl}/dashboard?pay=1`, receipt_url: `${siteUrl}/dashboard/payments`, action_url: `${siteUrl}/login` }),
+    () => ({ ...SAMPLE_VARS, site_url: siteUrl, dashboard_url: `${siteUrl}/dashboard`, pay_url: `${siteUrl}/dashboard?pay=1`, receipt_url: `${siteUrl}/dashboard/payments`, action_url: `${siteUrl}/login`, login_url: `${siteUrl}/login`, reset_url: `${siteUrl}/forgot-password` }),
     [siteUrl],
   );
   const html = useMemo(() => layout({ contentHtml: bodyToHtml(body, vars), businessName, siteUrl }), [body, vars, businessName, siteUrl]);

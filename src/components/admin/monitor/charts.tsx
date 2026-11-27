@@ -25,7 +25,7 @@ const asDate = (d: string) => new Date(`${d.slice(0, 10)}T12:00:00+01:00`);
 const dayLabel = (d: string) => dayFmt.format(asDate(d));
 const shortLabel = (d: string) => shortFmt.format(asDate(d));
 
-function useWidth<T extends HTMLElement>() {
+export function useWidth<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   const [width, setWidth] = useState(0);
   useEffect(() => {
@@ -39,7 +39,7 @@ function useWidth<T extends HTMLElement>() {
 }
 
 /** Monotone cubic curve through the points (never overshoots, so it never dips below zero). */
-function monotonePath(pts: [number, number][]) {
+export function monotonePath(pts: [number, number][]) {
   const n = pts.length;
   if (n === 0) return "";
   if (n === 1) return `M${pts[0][0]},${pts[0][1]}`;
@@ -77,7 +77,7 @@ function monotonePath(pts: [number, number][]) {
 }
 
 /** Sits beside the hovered point (right of it, or left near the edge) so it never hides what it describes. */
-function Tooltip({ x, width, dark, children }: { x: number; width: number; dark?: boolean; children: React.ReactNode }) {
+export function Tooltip({ x, width, dark, children }: { x: number; width: number; dark?: boolean; children: React.ReactNode }) {
   const W = 208;
   const gap = 14;
   const left = x + gap + W <= width ? x + gap : Math.max(0, x - gap - W);
@@ -95,7 +95,7 @@ function Tooltip({ x, width, dark, children }: { x: number; width: number; dark?
   );
 }
 
-function TipRow({ color, label, value, dark }: { color?: string; label: string; value: string; dark?: boolean }) {
+export function TipRow({ color, label, value, dark }: { color?: string; label: string; value: string; dark?: boolean }) {
   return (
     <div className="flex items-center justify-between gap-3">
       <span className="inline-flex items-center gap-1.5">

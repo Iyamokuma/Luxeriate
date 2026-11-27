@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { MobileNav, Sidebar, type NavKey } from "@/components/admin/sidebar";
+import { MobileNav, Sidebar, type NavKey, type SidebarUser } from "@/components/admin/sidebar";
 import { CommandSearch } from "@/components/admin/command-search";
 import { UserMenu } from "@/components/dashboard/user-menu";
 import { Logo } from "@/components/ui/logo";
@@ -9,6 +9,7 @@ import type { Permission } from "@/lib/constants";
 import type { Profile } from "@/types/db";
 
 const NAV_PERMS: [NavKey, Permission | null][] = [
+  ["executive", null],
   ["overview", null],
   ["customers", "customers.view"],
   ["payments", "payments.view"],
@@ -25,7 +26,11 @@ const NAV_PERMS: [NavKey, Permission | null][] = [
 ];
 
 function allowedFor(profile: Profile) {
-  return NAV_PERMS.filter(([, p]) => !p || can(profile, p)).map(([k]) => k);
+  return NAV_PERMS.filter(([k, p]) => (k === "executive" ? profile.role === "owner" : !p || can(profile, p))).map(([k]) => k);
+}
+
+function userFor(profile: Profile, email: string): SidebarUser {
+  return { name: profile.full_name || email, role: profile.role === "owner" ? "owner" : "staff", permissions: profile.permissions.length };
 }
 
 export default function AdminLayout({ children }: LayoutProps<"/admin">) {
@@ -61,7 +66,7 @@ async function StaffSidebar() {
   const session = await getSession();
   if (!session) redirect("/login?next=/admin");
   if (!isStaff(session.profile)) redirect("/dashboard");
-  return <Sidebar allowed={allowedFor(session.profile)} />;
+  return <Sidebar allowed={allowedFor(session.profile)} user={userFor(session.profile, session.email)} />;
 }
 
 async function StaffMobileNav() {

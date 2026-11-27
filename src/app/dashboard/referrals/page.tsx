@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { Gift, Users } from "lucide-react";
+import { BadgeCheck, Gift, Send, UserPlus, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -48,62 +48,82 @@ async function ReferralsContent() {
   }
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[1fr_1.3fr]">
-      <div className="space-y-5">
-        {codes.map((e) => (
-          <div key={e.id} className="relative overflow-hidden rounded-[1.5rem] bg-forest-800 p-7 text-cream shadow-float">
-            <ArcsMotif className="absolute -right-8 -top-10 h-52 text-honey-300/30" />
-            <p className="eyebrow relative text-honey-300">{e.package_name}</p>
-            <p className="relative mt-3 font-mono text-4xl font-semibold tracking-wider">{e.referral_code}</p>
-            <p className="relative mt-2 text-sm text-forest-100/80">Friends enter this code on the registration form.</p>
-            <div className="relative mt-6 [&_a]:border-white/20 [&_a]:bg-white/10 [&_a]:text-cream [&_button]:border-white/20 [&_button]:bg-white/10 [&_button]:text-cream">
-              <ReferralShare code={e.referral_code!} siteUrl={env.siteUrl} compact />
+    <div className="space-y-6">
+      <ol className="grid gap-3 sm:grid-cols-3">
+        {[
+          { icon: Send, title: "Share your code", body: "Send it on WhatsApp or copy it anywhere." },
+          { icon: UserPlus, title: "They register", body: "Friends enter your code on the registration form." },
+          { icon: BadgeCheck, title: "It counts once they pay", body: "Luxuriate rewards its top referrers each cycle." },
+        ].map(({ icon: Icon, title, body }, i) => (
+          <li key={title} className="card flex items-start gap-3.5 p-4 sm:p-5">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-honey-50 text-honey-700 ring-1 ring-inset ring-honey-200">
+              <Icon className="size-4" />
+            </span>
+            <div className="min-w-0">
+              <p className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.14em] text-ink-400">Step {i + 1}</p>
+              <p className="mt-0.5 text-sm font-semibold text-ink-900">{title}</p>
+              <p className="mt-0.5 text-[0.8125rem] text-ink-500">{body}</p>
             </div>
-          </div>
+          </li>
         ))}
-        <div className="grid grid-cols-2 gap-4">
-          <Card>
-            <CardContent>
-              <p className="text-sm text-ink-500">People referred</p>
-              <p className="tnum mt-2 font-display text-3xl font-semibold text-ink-900">{referrals.length}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent>
-              <p className="text-sm text-ink-500">Now contributing</p>
-              <p className="tnum mt-2 font-display text-3xl font-semibold text-ink-900">{active}</p>
-            </CardContent>
-          </Card>
+      </ol>
+      <div className="grid gap-5 lg:grid-cols-[1fr_1.3fr]">
+        <div className="space-y-5">
+          {codes.map((e) => (
+            <div key={e.id} className="relative overflow-hidden rounded-[1.5rem] bg-forest-800 p-7 text-cream shadow-float">
+              <ArcsMotif className="absolute -right-8 -top-10 h-52 text-honey-300/30" />
+              <p className="eyebrow relative text-honey-300">{e.package_name}</p>
+              <p className="relative mt-3 font-mono text-4xl font-semibold tracking-wider">{e.referral_code}</p>
+              <p className="relative mt-2 text-sm text-forest-100/80">Friends enter this code on the registration form.</p>
+              <div className="relative mt-6 [&_a]:border-white/20 [&_a]:bg-white/10 [&_a]:text-cream [&_button]:border-white/20 [&_button]:bg-white/10 [&_button]:text-cream">
+                <ReferralShare code={e.referral_code!} siteUrl={env.siteUrl} compact />
+              </div>
+            </div>
+          ))}
+          <div className="grid grid-cols-2 gap-4">
+            <Card>
+              <CardContent>
+                <p className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.14em] text-ink-400">People referred</p>
+                <p className="tnum mt-2 text-3xl font-semibold tracking-tight text-ink-900">{referrals.length}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent>
+                <p className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.14em] text-ink-400">Now paying</p>
+                <p className="tnum mt-2 text-3xl font-semibold tracking-tight text-forest-700">{active}</p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>People you&apos;ve referred</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {referrals.length === 0 ? (
-            <EmptyState icon={<Users />} title="No referrals yet" description="When someone joins with your code, they'll appear here." className="py-10" />
-          ) : (
-            <ul className="divide-y divide-line">
-              {referrals.map((r, i) => (
-                <li key={i} className="flex items-center gap-3 py-3.5">
-                  <Avatar name={r.first_name} />
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold text-ink-900">{r.first_name}</p>
-                    <p className="text-xs text-ink-400">
-                      {r.package_name} · joined {formatDate(r.joined_at)}
-                    </p>
-                  </div>
-                  <Badge tone={r.status === "active" ? "forest" : r.status === "completed" ? "ink" : "neutral"} size="sm">
-                    {ENROLLMENT_LABEL[r.status]}
-                  </Badge>
-                </li>
-              ))}
-            </ul>
-          )}
-        </CardContent>
-      </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>People you&apos;ve referred</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {referrals.length === 0 ? (
+              <EmptyState icon={<Users />} title="No referrals yet" description="When someone joins with your code, they'll appear here." className="py-10" />
+            ) : (
+              <ul className="divide-y divide-line">
+                {referrals.map((r, i) => (
+                  <li key={i} className="flex items-center gap-3 py-3.5">
+                    <Avatar name={r.first_name} />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-ink-900">{r.first_name}</p>
+                      <p className="text-xs text-ink-400">
+                        {r.package_name} · joined {formatDate(r.joined_at)}
+                      </p>
+                    </div>
+                    <Badge tone={r.status === "active" ? "forest" : r.status === "completed" ? "ink" : "neutral"} size="sm">
+                      {ENROLLMENT_LABEL[r.status]}
+                    </Badge>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

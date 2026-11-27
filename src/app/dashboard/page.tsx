@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardOverview, Greeting } from "@/components/dashboard/overview";
-import { getSession, isStaff } from "@/lib/auth";
+import { getSession, homeFor, isStaff } from "@/lib/auth";
 import { getEnrollmentDetail, getMyEnrollments, pickEnrollment } from "@/lib/data/customer";
 import { firstName } from "@/lib/format";
 import { firstParam } from "@/lib/utils";
@@ -27,7 +27,7 @@ async function Overview({ searchParams }: { searchParams: PageProps<"/dashboard"
   const sp = await searchParams;
   const session = await getSession();
   if (!session) redirect("/login?next=/dashboard");
-  if (isStaff(session.profile)) redirect("/admin");
+  if (isStaff(session.profile)) redirect(homeFor(session.profile));
 
   const enrollments = await getMyEnrollments(session);
   const e = pickEnrollment(enrollments, firstParam(sp.e));
@@ -55,7 +55,7 @@ async function Overview({ searchParams }: { searchParams: PageProps<"/dashboard"
     );
   }
 
-  const { installments, events, payments } = await getEnrollmentDetail(session, e.id);
+  const { installments, events, payments, items } = await getEnrollmentDetail(session, e.id, e.package_id);
 
   return (
     <DashboardOverview
@@ -65,6 +65,7 @@ async function Overview({ searchParams }: { searchParams: PageProps<"/dashboard"
       installments={installments}
       events={events}
       payments={payments}
+      items={items}
       profile={session.profile}
       payParam={firstParam(sp.pay) === "1"}
     />
@@ -73,16 +74,13 @@ async function Overview({ searchParams }: { searchParams: PageProps<"/dashboard"
 
 function DashboardSkeleton() {
   return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <Skeleton className="h-10 w-72" />
-        <Skeleton className="h-5 w-60" />
+    <div className="space-y-6 sm:space-y-7">
+      <div className="h-[38rem] animate-pulse rounded-[2rem] bg-night lg:h-[33rem]" />
+      <div className="grid gap-5 lg:grid-cols-[1.7fr_1fr]">
+        <Skeleton className="h-96 rounded-[1.25rem]" />
+        <Skeleton className="h-96 rounded-[1.25rem]" />
       </div>
-      <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
-        <Skeleton className="h-72 rounded-[1.75rem]" />
-        <Skeleton className="h-72 rounded-[1.25rem]" />
-      </div>
-      <Skeleton className="h-64 rounded-[1.25rem]" />
+      <Skeleton className="h-48 rounded-[1.25rem]" />
     </div>
   );
 }
