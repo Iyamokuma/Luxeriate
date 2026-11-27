@@ -2,27 +2,20 @@ import Link from "next/link";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  BarChart3,
-  Crown,
   Gauge,
   KeyRound,
-  LayoutDashboard,
   MessageCircle,
   Phone,
   Settings,
   ShieldAlert,
   TriangleAlert,
-  UserCog,
-  Users,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { ProgressRing } from "@/components/ui/progress";
-import { ArcsMotif } from "@/components/ui/logo";
 import { LiveRefresh } from "@/components/admin/realtime";
 import { YearSwitcher } from "@/components/admin/url-controls";
 import { Sparkline } from "@/components/admin/monitor/charts";
 import { C } from "@/components/admin/monitor/colors";
-import { LagosClock } from "@/components/admin/monitor/live-bits";
 import { Meter, Panel, PanelHead, SectionTitle, TeamTable, Vital } from "@/components/admin/monitor/panels";
 import { RevenueChart } from "@/components/admin/executive/revenue-chart";
 import type { CycleFigures, ExecutiveBrief } from "@/lib/data/executive";
@@ -55,18 +48,13 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_70%_at_0%_0%,rgb(194_232_108/0.12),transparent_62%),radial-gradient(55%_75%_at_100%_100%,rgb(35_120_76/0.4),transparent_70%)]"
         />
-        <div aria-hidden className="grid-lines pointer-events-none absolute inset-0 opacity-40 invert [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
-        <ArcsMotif className="pointer-events-none absolute -right-36 -top-48 h-[30rem] w-auto text-white/[0.035]" />
 
         <div className="relative p-5 sm:p-8 xl:p-10">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-leaf-300 px-2.5 py-1 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-forest-950 shadow-[0_6px_18px_-8px_rgb(166_214_69/0.8)]">
-                <Crown className="size-3" />
-                Super admin
-              </span>
-              <span className="font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-ink-400">Executive brief</span>
-              <LagosClock className="text-ink-300" />
+              <h1 className="text-xl font-semibold tracking-[-0.02em] sm:text-2xl">
+                {greeting()}, {firstName(name)}
+              </h1>
             </div>
             <div className="flex items-center gap-2">
               <LiveRefresh dark every={120_000} tables={LIVE_TABLES} />
@@ -74,16 +62,9 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
             </div>
           </div>
 
-          <div className="mt-8 grid gap-10 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] xl:gap-12">
+          <div className="mt-7 grid gap-10 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] xl:gap-12">
             <div className="flex min-w-0 flex-col">
-              <h1 className="text-[2rem] font-bold leading-[1.08] tracking-[-0.035em] sm:text-[2.5rem]">
-                {greeting()}, <span className="text-leaf-300">{firstName(name)}</span>
-              </h1>
-              <p className="mt-2.5 max-w-xl text-[0.9375rem] leading-relaxed text-ink-300">
-                The {year} cycle at a glance: what customers have committed to, what&apos;s in the bank, what&apos;s promised back, and who needs a call.
-              </p>
-
-              <div className="mt-9">
+              <div>
                 <p className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-ink-400">Booked · {year} cycle</p>
                 <p
                   className="tnum mt-2.5 text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-cream sm:text-[3.75rem]"
@@ -126,25 +107,6 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
             <Scorecard now={now} before={before} />
           </div>
 
-          <nav aria-label="Shortcuts" className="mt-9 flex flex-wrap gap-2 border-t border-white/[0.08] pt-6">
-            {[
-              { href: `/admin/command-centre?year=${year}`, label: "Command centre", icon: LayoutDashboard },
-              { href: `/admin/customers?year=${year}`, label: "Customers", icon: Users },
-              { href: `/admin/reports?year=${year}`, label: "Reports", icon: BarChart3 },
-              { href: "/admin/staff", label: "Staff & access", icon: UserCog },
-              { href: "/admin/settings", label: "Settings", icon: Settings },
-            ].map(({ href, label, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className="group inline-flex items-center gap-2 rounded-full bg-white/[0.05] px-3.5 py-2 text-sm font-semibold text-ink-200 ring-1 ring-inset ring-white/10 transition hover:bg-white/10 hover:text-cream"
-              >
-                <Icon className="size-4 text-leaf-300" />
-                {label}
-                <ArrowUpRight className="size-3.5 text-ink-400 transition group-hover:-translate-y-px group-hover:translate-x-px group-hover:text-cream" />
-              </Link>
-            ))}
-          </nav>
         </div>
       </section>
 

@@ -1,13 +1,12 @@
 import Link from "next/link";
-import { ArrowUpRight, Crown, ShieldCheck, TriangleAlert } from "lucide-react";
-import { ArcsMotif } from "@/components/ui/logo";
+import { ArrowUpRight, Crown, TriangleAlert } from "lucide-react";
 import { LiveRefresh } from "@/components/admin/realtime";
 import { YearSwitcher } from "@/components/admin/url-controls";
 import { firstName, formatDate, greeting, naira, nairaShort, number, percent, plural, relativeTime } from "@/lib/format";
 import type { AdminOverview, SystemMonitor } from "@/types/db";
 import { EmailChart, FlowChart, ForecastChart, PulseChart, SignupChart, Sparkline } from "./charts";
 import { C } from "./colors";
-import { LagosClock, SectionNav } from "./live-bits";
+import { SectionNav } from "./live-bits";
 import {
   AttentionStrip,
   DataFootprint,
@@ -117,17 +116,13 @@ export function OverviewView({ name, owner, years, year, monitor, monitorError, 
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_75%_at_100%_0%,rgb(194_232_108/0.12),transparent_62%),radial-gradient(45%_60%_at_0%_100%,rgb(35_120_76/0.36),transparent_70%)]"
         />
-        <div aria-hidden className="grid-lines pointer-events-none absolute inset-0 opacity-50 [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
-        <ArcsMotif className="pointer-events-none absolute -right-40 -top-52 h-[30rem] w-auto text-white/[0.035]" />
 
         <div className="relative p-5 sm:p-8 xl:p-10">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-leaf-300/10 px-2.5 py-1 font-mono text-[0.625rem] font-medium uppercase tracking-[0.16em] text-leaf-300 ring-1 ring-inset ring-leaf-300/20">
-                <ShieldCheck className="size-3" />
-                {owner ? "Super admin" : "Back office"}
-              </span>
-              <LagosClock className="text-ink-300" />
+              <h1 className="text-xl font-semibold tracking-[-0.02em] text-cream sm:text-2xl">
+                {greeting()}, {firstName(name)}
+              </h1>
             </div>
             <div className="flex items-center gap-2">
               {owner && (
@@ -146,18 +141,9 @@ export function OverviewView({ name, owner, years, year, monitor, monitorError, 
 
           <div className="mt-8 grid gap-10 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] xl:gap-12">
             <div className="flex min-w-0 flex-col">
-              <h1 className="text-[2rem] font-bold leading-[1.08] tracking-[-0.035em] text-cream sm:text-[2.5rem]">
-                {greeting()}, <span className="text-leaf-300">{firstName(name)}</span>
-              </h1>
-              <p className="mt-2.5 max-w-xl text-[0.9375rem] leading-relaxed text-ink-300">
-                {owner
-                  ? "Everything running at Luxuriate right now: the money, the customers, the deliveries and the systems behind them."
-                  : `Here's how the ${year} cycle is going.`}
-              </p>
-
               {money ? (
                 <>
-                  <div className="mt-9">
+                  <div>
                     <p className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-ink-400">Received · all time</p>
                     <p
                       className="tnum mt-2.5 text-[2.75rem] font-semibold leading-none tracking-[-0.045em] text-cream sm:text-[3.75rem]"
