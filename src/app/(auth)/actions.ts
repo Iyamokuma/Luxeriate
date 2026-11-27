@@ -30,6 +30,30 @@ export async function signIn(_: FormState, formData: FormData): Promise<FormStat
   redirect(safeNext(formData.get("next")) ?? homeFor(profile));
 }
 
+/** The back-office sign-in at /admin: team accounts only. */
+export async function staffSignIn(_: FormState, formData: FormData): Promise<FormState> {
+  const parsed = z
+    .object({ email: z.email(), password: z.string().min(1) })
+    .safeParse({ email: String(formData.get("email") ?? "").trim().toLowerCase(), password: formData.get("password") });
+  if (!parsed.success) return { error: "Enter your email and password." };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
+  if (error || !data.user) return { error: "That email and password don't match our records." };
+
+  const { data: profile } = await supabase.from("profiles").select("role, is_active").eq("id", data.user.id).single();
+  if (!profile || profile.role === "customer") {
+    await supabase.auth.signOut();
+    return { error: "This sign-in is for the Luxuriate team. Customers log in at /login." };
+  }
+  if (!profile.is_active) {
+    await supabase.auth.signOut();
+    return { error: "This account has been deactivated. Please contact the owner." };
+  }
+  const next = safeNext(formData.get("next"));
+  redirect(next?.startsWith("/admin") ? next : "/admin");
+}
+
 export async function requestPasswordReset(_: FormState, formData: FormData): Promise<FormState> {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   if (!z.email().safeParse(email).success) return { error: "Enter a valid email address." };

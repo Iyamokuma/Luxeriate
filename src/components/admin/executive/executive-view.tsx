@@ -128,7 +128,7 @@ export function ExecutiveView({ name, years, year, brief, siteUrl }: { name: str
 
           <nav aria-label="Shortcuts" className="mt-9 flex flex-wrap gap-2 border-t border-white/[0.08] pt-6">
             {[
-              { href: `/admin?year=${year}`, label: "Command centre", icon: LayoutDashboard },
+              { href: `/admin/command-centre?year=${year}`, label: "Command centre", icon: LayoutDashboard },
               { href: `/admin/customers?year=${year}`, label: "Customers", icon: Users },
               { href: `/admin/reports?year=${year}`, label: "Reports", icon: BarChart3 },
               { href: "/admin/staff", label: "Staff & access", icon: UserCog },

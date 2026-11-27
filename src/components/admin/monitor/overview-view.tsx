@@ -132,7 +132,7 @@ export function OverviewView({ name, owner, years, year, monitor, monitorError, 
             <div className="flex items-center gap-2">
               {owner && (
                 <Link
-                  href={`/admin/executive?year=${year}`}
+                  href={`/admin?year=${year}`}
                   className="group hidden items-center gap-1.5 rounded-full bg-white/[0.05] px-3 py-1.5 text-xs font-semibold text-ink-200 ring-1 ring-inset ring-white/10 transition hover:bg-white/10 hover:text-cream sm:inline-flex"
                 >
                   <Crown className="size-3.5 text-honey-300" /> Executive brief

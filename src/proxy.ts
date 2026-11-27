@@ -30,10 +30,13 @@ export async function proxy(request: NextRequest) {
   const signedIn = Boolean(data?.claims?.sub);
   const { pathname, search } = request.nextUrl;
 
-  const isPrivate = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
-  if (!signedIn && isPrivate) {
+  const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
+  const isPrivate = pathname.startsWith("/dashboard") || isAdmin;
+  // /admin itself is the team's sign-in page when signed out
+  if (!signedIn && isPrivate && pathname !== "/admin") {
     const login = request.nextUrl.clone();
-    login.pathname = "/login";
+    // the team signs in at /admin, customers at /login
+    login.pathname = isAdmin ? "/admin" : "/login";
     login.search = `?next=${encodeURIComponent(pathname + search)}`;
     const redirect = NextResponse.redirect(login);
     response.cookies.getAll().forEach((c) => redirect.cookies.set(c));

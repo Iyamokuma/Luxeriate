@@ -21,8 +21,8 @@ Customers choose a foodstuff package, register, pay monthly contributions throug
 | Customer dashboard | `/dashboard`: opens on the plan that needs attention first (late, then due, then a package waiting to be collected). A charcoal-and-gold hero says where the plan stands and what to pay, beside the customer's own 3D package box filled with one item per month paid. Below: savings against the plan, their on-time record, the year month by month, what's in their box, receipts, referral code and activity. Also `/dashboard/payments` (totals across plans, receipts, schedule), `/dashboard/referrals`, `/dashboard/profile` |
 | Downloadable receipts | `/api/receipts/[id]` (branded PDF) |
 | Completion, fulfilment steps, savings return status | Dashboard tracker and timeline |
-| Executive brief (owner only, the super admin's home page) | `/admin/executive`: the cycle's booked value against what's collected, a scorecard against the previous cycle, collection, overdue, completion, renewal and referral rates, 12 months of revenue, where the money stands (received, still to come, promised back, costs), package mix, loyalty and top referrers, customers behind on payments with one-tap call and pre-written WhatsApp messages, stalled registrations, the team and recent sensitive changes. Staff who open it are sent to the command centre |
-| Command centre: money, customers, packages, fulfilment, emails, team, system health and launch readiness on one page, with a live event stream | `/admin` (updates by itself through Supabase Realtime; each staff member sees only what their permissions allow) |
+| Executive brief (owner only, the super admin's home page) | `/admin` when the owner is signed in: the cycle's booked value against what's collected, a scorecard against the previous cycle, collection, overdue, completion, renewal and referral rates, 12 months of revenue, where the money stands (received, still to come, promised back, costs), package mix, loyalty and top referrers, customers behind on payments with one-tap call and pre-written WhatsApp messages, stalled registrations, the team and recent sensitive changes |
+| Command centre: money, customers, packages, fulfilment, emails, team, system health and launch readiness on one page, with a live event stream | `/admin` for staff, `/admin/command-centre` for the owner (updates by itself through Supabase Realtime; each staff member sees only what their permissions allow) |
 | Customers (search, profile, history, Excel export) | `/admin/customers` |
 | Payments (Paid / Unpaid / Late / Completed; registration fees on their own line) | `/admin/payments` |
 | Packages (create, edit, items, savings return, open/close, copy to next year) | `/admin/packages` |
@@ -91,7 +91,9 @@ Copy `.env.example` to `.env.local` and fill it in. On Vercel, add the same vari
 pnpm create-owner owner@example.com "Owner Name" "a-strong-password"
 ```
 
-Sign in at `/login` and you'll land on the executive brief. Invite staff from **Admin → Staff**; they get an email to set their password and land in the command centre.
+**Two front doors.** The team signs in at **`/admin`**: signed out, it shows the back-office sign-in (customer accounts are turned away there); signed in, the owner sees the executive brief and staff see the command centre. Customers sign in at **`/login`** (a team member who uses it is sent on to `/admin`). Signing out returns each to their own door.
+
+Invite staff from **Admin → Staff**; they get an email to set their password, then sign in at `/admin`.
 
 ### Trying it with demo data
 
@@ -107,7 +109,7 @@ Every demo account uses an `@luxuriate.test` address and shares one password, ge
 
 | Account | Shows |
 |---|---|
-| `owner@luxuriate.test` | Executive brief and the whole back office |
+| `owner@luxuriate.test` | Signs in at `/admin`: executive brief and the whole back office |
 | `chidi@luxuriate.test`, `bisi@luxuriate.test` | Staff with the Operations and Payments clerk permissions |
 | `amara@luxuriate.test` | Two plans, a month due now, three referrals |
 | `ngozi@luxuriate.test` | A finished plan with collection booked, plus a new 2027 plan |

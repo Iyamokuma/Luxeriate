@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { ArrowRight, CircleAlert, Eye, EyeOff, MailCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/input";
-import { requestPasswordReset, signIn, updatePassword, type FormState } from "./actions";
+import { requestPasswordReset, signIn, staffSignIn, updatePassword, type FormState } from "./actions";
 
 export function PasswordInput(props: React.ComponentProps<typeof Input>) {
   const [show, setShow] = useState(false);
@@ -28,7 +28,7 @@ export function PasswordInput(props: React.ComponentProps<typeof Input>) {
   );
 }
 
-function Alert({ children, tone = "error" }: { children: React.ReactNode; tone?: "error" | "success" }) {
+export function Alert({ children, tone = "error" }: { children: React.ReactNode; tone?: "error" | "success" }) {
   return (
     <div
       role={tone === "error" ? "alert" : "status"}
@@ -41,6 +41,39 @@ function Alert({ children, tone = "error" }: { children: React.ReactNode; tone?:
       {tone === "error" ? <CircleAlert className="mt-0.5 size-4 shrink-0" /> : <MailCheck className="mt-0.5 size-4 shrink-0" />}
       <span>{children}</span>
     </div>
+  );
+}
+
+/** The team's sign-in form at /admin. */
+export function StaffLoginForm() {
+  const params = useSearchParams();
+  const [state, action, pending] = useActionState<FormState, FormData>(staffSignIn, undefined);
+  const signedOut = params.get("signed_out") === "1";
+  return (
+    <form action={action} className="space-y-5">
+      <input type="hidden" name="next" value={params.get("next") ?? ""} />
+      {state?.error && <Alert>{state.error}</Alert>}
+      {!state?.error && signedOut && <Alert tone="success">You&apos;ve been signed out of the back office.</Alert>}
+      <Field label="Work email" htmlFor="email">
+        <Input id="email" name="email" type="email" autoComplete="username" inputMode="email" required placeholder="you@luxuriate-mart.org" />
+      </Field>
+      <Field
+        label={
+          <span className="flex w-full items-center justify-between">
+            Password
+            <Link href="/forgot-password" className="text-[0.8125rem] font-semibold text-forest-700 hover:underline">
+              Forgot password?
+            </Link>
+          </span>
+        }
+        htmlFor="password"
+      >
+        <PasswordInput id="password" name="password" autoComplete="current-password" required placeholder="Your password" />
+      </Field>
+      <Button type="submit" size="lg" block loading={pending}>
+        Sign in to the back office <ArrowRight />
+      </Button>
+    </form>
   );
 }
 

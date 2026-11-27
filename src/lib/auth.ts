@@ -47,7 +47,7 @@ export async function requireUser(next = "/dashboard") {
 /** Staff gate for admin pages and actions. */
 export async function requireStaff(permission?: Permission) {
   const session = await getSession();
-  if (!session) redirect("/login?next=/admin");
+  if (!session) redirect("/admin");
   if (!isStaff(session.profile)) redirect("/dashboard");
   if (permission && !can(session.profile, permission)) redirect(`/admin/no-access?need=${permission}`);
   return session;
@@ -62,8 +62,7 @@ export async function authorize(permission?: Permission) {
   return { ok: true as const, session };
 }
 
-/** Where someone lands after signing in: the owner's executive brief, the staff command centre, or the customer dashboard. */
+/** Where someone lands after signing in: the back office at /admin for the team, the dashboard for customers. */
 export function homeFor(profile: Pick<Profile, "role" | "is_active"> | null | undefined) {
-  if (!isStaff(profile)) return "/dashboard";
-  return profile?.role === "owner" ? "/admin/executive" : "/admin";
+  return isStaff(profile) ? "/admin" : "/dashboard";
 }

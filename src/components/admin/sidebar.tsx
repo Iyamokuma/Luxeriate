@@ -32,7 +32,8 @@ const GROUPS: { label: string; items: { key: NavKey; href: string; label: string
   {
     label: "",
     items: [
-      { key: "executive", href: "/admin/executive", label: "Executive brief", icon: Crown },
+      // the owner's home is /admin; staff land on the command centre there instead
+      { key: "executive", href: "/admin", label: "Executive brief", icon: Crown },
       { key: "overview", href: "/admin", label: "Command centre", icon: LayoutDashboard },
     ],
   },
@@ -65,7 +66,11 @@ const GROUPS: { label: string; items: { key: NavKey; href: string; label: string
   },
 ];
 
-function NavList({ allowed, onNavigate }: { allowed: NavKey[]; onNavigate?: () => void }) {
+function hrefFor(key: NavKey, href: string, owner: boolean) {
+  return owner && key === "overview" ? "/admin/command-centre" : href;
+}
+
+function NavList({ allowed, owner = false, onNavigate }: { allowed: NavKey[]; owner?: boolean; onNavigate?: () => void }) {
   // the navigation always sits on the dark night-green panel
   const pathname = usePathname();
   const params = useSearchParams();
@@ -79,9 +84,10 @@ function NavList({ allowed, onNavigate }: { allowed: NavKey[]; onNavigate?: () =
           <div key={g.label || "top"}>
             {g.label && <p className="eyebrow mb-2 px-3 text-ink-400">{g.label}</p>}
             <ul className="space-y-0.5">
-              {items.map(({ key, href, label, icon: Icon }) => {
+              {items.map(({ key, href: base, label, icon: Icon }) => {
+                const href = hrefFor(key, base, owner);
                 const active = href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
-                const owner = key === "executive";
+                const ownerItem = key === "executive";
                 return (
                   <li key={key}>
                     <Link
@@ -94,9 +100,9 @@ function NavList({ allowed, onNavigate }: { allowed: NavKey[]; onNavigate?: () =
                           : "text-ink-300 hover:bg-white/[0.05] hover:text-cream",
                       )}
                     >
-                      <Icon className={cn("size-[1.05rem] shrink-0", active || owner ? "text-honey-300" : "text-ink-400 group-hover:text-ink-200")} />
+                      <Icon className={cn("size-[1.05rem] shrink-0", active || ownerItem ? "text-honey-300" : "text-ink-400 group-hover:text-ink-200")} />
                       {label}
-                      {owner && (
+                      {ownerItem && (
                         <span className="ml-auto rounded-full bg-honey-400/12 px-1.5 py-px font-mono text-[0.5625rem] font-medium uppercase tracking-[0.12em] text-honey-300 ring-1 ring-inset ring-honey-400/25">
                           Owner
                         </span>
@@ -115,7 +121,7 @@ function NavList({ allowed, onNavigate }: { allowed: NavKey[]; onNavigate?: () =
 
 export type SidebarUser = { name: string; role: "owner" | "staff"; permissions: number };
 
-export function Sidebar({ allowed, user }: { allowed: NavKey[]; user?: SidebarUser }) {
+export function Sidebar({ allowed, owner, user }: { allowed: NavKey[]; owner?: boolean; user?: SidebarUser }) {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-night text-cream lg:flex">
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_35%_at_0%_0%,rgb(207_158_41/0.10),transparent_70%)]" />
@@ -125,7 +131,7 @@ export function Sidebar({ allowed, user }: { allowed: NavKey[]; user?: SidebarUs
         </Link>
       </div>
       <div className="relative flex-1 overflow-y-auto py-4">
-        <NavList allowed={allowed} />
+        <NavList allowed={allowed} owner={owner} />
       </div>
       <div className="relative border-t border-white/10 px-4 py-4">
         {user ? (
@@ -160,7 +166,7 @@ export function Sidebar({ allowed, user }: { allowed: NavKey[]; user?: SidebarUs
   );
 }
 
-export function MobileNav({ allowed }: { allowed: NavKey[] }) {
+export function MobileNav({ allowed, owner }: { allowed: NavKey[]; owner?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -177,7 +183,7 @@ export function MobileNav({ allowed }: { allowed: NavKey[] }) {
             <Logo light />
           </div>
           <div className="flex-1 overflow-y-auto py-4">
-            <NavList allowed={allowed} onNavigate={() => setOpen(false)} />
+            <NavList allowed={allowed} owner={owner} onNavigate={() => setOpen(false)} />
           </div>
         </SheetContent>
       </Sheet>
